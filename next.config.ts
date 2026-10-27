@@ -1,9 +1,8 @@
+// Konfigurasi kompilasi CSS dan runtime aplikasi PosterKu.
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
-  cacheComponents: true,
-  partialPrefetching: true,
+  // Endpoint AI memakai runtime Node.js dan data langsung dari server.
   turbopack: {
     rules: {
       "*.css": {
