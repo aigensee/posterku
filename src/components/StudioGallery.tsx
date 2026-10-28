@@ -1,9 +1,10 @@
 "use client";
 
 // Galeri dua atau tiga kolom dengan antrean dan konfirmasi hapus di halaman.
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { models } from "@/lib/models";
 import { clamp, mediaUrl, type StudioItem } from "@/lib/studio";
+import { StudioProgress } from "./StudioProgress";
 import { StudioMedia } from "./StudioMedia";
 import { StudioDialog } from "./StudioDialog";
 import { StudioViewer } from "./StudioViewer";
@@ -13,13 +14,7 @@ export function StudioGallery({ app }: { app: Studio }) {
   const [filter, setFilter] = useState("all");
   const [viewer, setViewer] = useState<StudioItem | null>(null);
   const [remove, setRemove] = useState<StudioItem | null>(null);
-  const [now, setNow] = useState(() => Date.now());
   const pending = app.activities.filter((a) => a.status !== "succeeded");
-  useEffect(() => {
-    if (!pending.some((a) => a.status !== "failed")) return;
-    const timer = setInterval(() => setNow(Date.now()), 1000);
-    return () => clearInterval(timer);
-  }, [pending]);
   const count = (kind: string) =>
     app.history.filter((i) => kind === "all" || i.kind === kind).length +
     pending.filter((i) => kind === "all" || i.state.kind === kind).length;
@@ -81,24 +76,28 @@ export function StudioGallery({ app }: { app: Studio }) {
           {pending
             .filter((a) => filter === "all" || a.state.kind === filter)
             .map((a) => {
-              const seconds = Math.max(0, Math.floor((now - a.started) / 1000));
-              let statusText = `Membuat… ${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, "0")}`;
-              if (a.status === "queued") statusText = "Mengantri…";
-              if (a.status === "failed")
-                statusText = a.error || "Pembuatan gagal. Coba lagi.";
               return (
                 <article
                   key={a.id}
                   className={`pending-card ${a.status === "failed" ? "failed-card" : "shimmer"}`}
                   style={{ aspectRatio: a.state.ratio.replace(":", "/") }}
                 >
-                  <span className="pending-symbol">
-                    {a.status === "failed" ? "!" : "✦"}
+                  <span
+                    className={
+                      a.status === "failed" ? "pending-symbol" : "pending-spinner"
+                    }
+                    aria-hidden="true"
+                  >
+                    {a.status === "failed" ? "!" : null}
                   </span>
                   <strong>
                     {models.find((m) => m.id === a.state.model)?.label}
                   </strong>
-                  <p role="status">{statusText}</p>
+                  {a.status === "failed" ? (
+                    <p role="status">{a.error || "Pembuatan gagal. Coba lagi."}</p>
+                  ) : (
+                    <StudioProgress activity={a} />
+                  )}
                   {a.status === "failed" && (
                     <div className="chips">
                       <button

@@ -33,7 +33,7 @@ export function StudioMedia({
     !item.fileId.startsWith("demo-");
   return (
     <div
-      className={`media-box ${loaded ? "loaded" : ""}`}
+      className={`media-box ${loaded ? "loaded" : failed ? "" : "shimmer"}`}
       style={{ aspectRatio: item.ratio.replace(":", "/") }}
     >
       {failed ? (

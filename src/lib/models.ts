@@ -6,6 +6,7 @@ export type StudioModel = {
   note: string;
   ratios: string[];
   promptMax: number;
+  expectedSeconds: number;
   textType: string;
   imageType?: string;
   imageField?: string;
@@ -20,6 +21,7 @@ export type StudioModel = {
 export const models: StudioModel[] = [
   {
     id: "z-image",
+    expectedSeconds: 15,
     kind: "image",
     label: "Z-Image",
     note: "Cepat & paling hemat",
@@ -29,6 +31,7 @@ export const models: StudioModel[] = [
   },
   {
     id: "nano-banana-2-lite",
+    expectedSeconds: 30,
     kind: "image",
     label: "Nano Banana 2 Lite",
     note: "Bisa pakai foto referensi",
@@ -41,6 +44,7 @@ export const models: StudioModel[] = [
   },
   {
     id: "bytedance-seedance-2-mini",
+    expectedSeconds: 120,
     kind: "video",
     label: "Seedance 2 Mini",
     note: "Video + suara, rasio lengkap",
@@ -57,6 +61,7 @@ export const models: StudioModel[] = [
   },
   {
     id: "grok-imagine",
+    expectedSeconds: 90,
     kind: "video",
     label: "Grok Imagine",
     note: "Paling hemat untuk video",

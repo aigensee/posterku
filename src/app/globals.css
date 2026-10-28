@@ -346,10 +346,10 @@ main {
   border: 1px solid var(--border);
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   gap: 12px;
-  padding: 16px;
+  padding: clamp(20px, 14%, 96px) 16px 16px;
   text-align: center;
   min-height: 160px;
 }
@@ -361,6 +361,40 @@ main {
 .pending-symbol {
   font-size: 28px;
   color: var(--accent);
+}
+.pending-spinner {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  border: 2px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: pending-spin 1s linear infinite;
+}
+@keyframes pending-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.pending-progress {
+  display: grid;
+  gap: 8px;
+  width: 100%;
+  max-width: 240px;
+  color: var(--muted);
+  font-size: 12px;
+}
+.progress-track {
+  height: 5px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--border);
+}
+.progress-track span {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+  border-radius: inherit;
 }
 .shimmer {
   background: linear-gradient(
@@ -1174,7 +1208,7 @@ dd {
     top: 68px;
   }
   .pending-card {
-    padding: 12px 8px;
+    padding: clamp(20px, 14%, 96px) 8px 12px;
   }
   .pending-card strong {
     font-size: 11px;

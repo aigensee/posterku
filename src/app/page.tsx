@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useStudio } from "@/components/useStudio";
 import { StudioComposer } from "@/components/StudioComposer";
+import { StudioProgress } from "@/components/StudioProgress";
 import { StudioGallery } from "@/components/StudioGallery";
 import { StudioDialog } from "@/components/StudioDialog";
 import { StudioIcon } from "@/components/StudioIcon";
@@ -197,6 +198,9 @@ export default function Home() {
                   }[a.status]
                 }
               </span>
+              {(a.status === "queued" || a.status === "running") && (
+                <StudioProgress activity={a} compact />
+              )}
               <p>{a.state.prompt.slice(0, 100)}</p>
               <small>
                 {new Date(a.started).toLocaleTimeString("id-ID")} · ◈{" "}

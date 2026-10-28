@@ -176,13 +176,21 @@ export function useStudio() {
       { id, state, started, status: "queued", credits: 0 },
       ...items,
     ]);
-    if (state === composer)
-      setComposer((current) => ({ ...current, attached: undefined }));
+    const fromComposer = state === composer;
+    let jobExists = false;
+    if (fromComposer)
+      setComposer((current) => ({
+        ...current,
+        prompt: "",
+        reference: undefined,
+        attached: undefined,
+      }));
     try {
       const result = await api<{ job: PosterJob; quotedCredits: number }>(
         "generate",
         { method: "POST", body: JSON.stringify(jobRequest(state)) },
       );
+      jobExists = true;
       let job = result.job;
       update({ status: job.status, credits: result.quotedCredits });
       const deadline = started + (state.kind === "video" ? 600000 : 180000);
@@ -240,6 +248,17 @@ export function useStudio() {
       if (!alive.current) return;
       const message =
         e instanceof Error ? e.message : "Pembuatan gagal. Silakan coba lagi.";
+      if (fromComposer && !jobExists)
+        setComposer((current) =>
+          current.prompt === ""
+            ? {
+                ...current,
+                prompt: state.prompt,
+                reference: state.reference,
+                attached: state.attached,
+              }
+            : current,
+        );
       update({ status: "failed", error: message });
       setError(message);
     } finally {
