@@ -86,6 +86,9 @@ otomatis/full access". Dengan begitu kamu selalu tahu apa yang dikerjakan AI.
 
 ### A5. Ambil folder awal
 
+> Lebih suka mulai dari folder kosong? Ikuti [MULAI-DARI-NOL.md](MULAI-DARI-NOL.md)
+> lalu lompat ke Bagian C.
+
 1. Buka repository kelas (link dari pengajar).
 2. Klik tombol hijau **Code**, lalu **Download ZIP**.
 3. Buka file ZIP-nya (klik dua kali). Di dalamnya ada folder bernama
