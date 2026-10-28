@@ -9,6 +9,7 @@ sepenuhnya dengan memberi instruksi ke agen AI (**Google Antigravity** atau
 
 | # | File | Hasil akhir sesi |
 |---|---|---|
+| ★ | [PANDUAN-MEMBUAT.md](PANDUAN-MEMBUAT.md) | **mulai di sini**: langkah lengkap dari folder kosong sampai online |
 | 0 | [00-PERSIAPAN.md](00-PERSIAPAN.md) | akun, alat, API key, starter kit |
 | — | [ATURAN-PAKAI.md](ATURAN-PAKAI.md) | **baca dulu**: 10 aturan emas + rumus prompt |
 | — | [CARA-PAKAI-AGENTS.md](CARA-PAKAI-AGENTS.md) | langkah demi langkah memakai `AGENTS.md` di Antigravity/Codex |

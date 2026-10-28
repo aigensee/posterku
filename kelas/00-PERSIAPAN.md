@@ -8,7 +8,7 @@ Waktu: ±45 menit. Semua gratis, kecuali kredit Yorai (cukup Rp10.000).
 |---|---|---|
 | GitHub | menyimpan kode online | https://github.com/signup |
 | Vercel | mempublikasikan aplikasi (gratis) | https://vercel.com/signup, pilih **Continue with GitHub** |
-| Yorai | API AI (teks + gambar) | https://yorai.id/register |
+| Yorai | API AI (teks, gambar, video) | https://yorai.id/register |
 | Google (Antigravity) **atau** ChatGPT (Codex) | agen AI programmer | lihat bagian 3 |
 
 ## 2. Program di komputer
@@ -50,7 +50,7 @@ dan beri tahu alamatnya"*.
 ## 4. Siapkan Yorai
 
 1. Login di https://yorai.id, lalu isi kredit di **Kredit** (Rp10.000 cukup untuk
-   ±100 poster latihan).
+   ±100 gambar latihan).
 2. Buka https://yorai.id/app/api dan klik **Buat key**. Beri nama `posterku`.
 3. **Salin key dan simpan di catatan pribadi.** Key hanya ditampilkan sekali.
    Jangan kirim ke siapa pun, termasuk ke chat AI.

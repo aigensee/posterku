@@ -34,9 +34,9 @@
 > dependensi sudah terpasang, `.env.local` ada, dan server dev berjalan.
 > Perbaiki lalu buka sendiri halamannya untuk memastikan.
 
-## Hasil poster jelek / tidak sesuai
+## Hasil gambar/video jelek / tidak sesuai
 
-> Poster yang dihasilkan [masalahnya: teks typo / produk tidak terlihat /
+> Gambar/video yang dihasilkan [masalahnya: teks typo / produk tidak terlihat /
 > warnanya norak]. Perbaiki instruksi untuk AI teks di `src/lib/prompts.ts`
 > agar prompt gambarnya [harapan]. Jangan memanggil AI sungguhan untuk
 > mengetes. Tunjukkan contoh prompt gambar yang baru (versi mode demo).
