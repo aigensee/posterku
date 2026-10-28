@@ -97,6 +97,10 @@ Setiap sesi memakai pola yang sama:
 
 ## Langkah 3 — Bangun aplikasinya, sesi demi sesi
 
+Semua prompt siap salin, berurutan dalam satu file:
+**[PROMPT-LENGKAP.md](PROMPT-LENGKAP.md)**. Atau buka per sesi lewat tabel di
+bawah.
+
 | Sesi | File prompt | Yang kamu lihat setelahnya | Biaya |
 |---|---|---|---|
 | 1 | [01-proyek-awal](prompts/01-proyek-awal.md) | halaman awal Next.js di `localhost:3000` | gratis |

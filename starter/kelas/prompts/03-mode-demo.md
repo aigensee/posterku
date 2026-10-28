@@ -39,9 +39,14 @@ Server (src/lib dan src/app/api):
 
 Browser:
 - Hook useStudio: state composer (disimpan di localStorage), membuat job,
-  menambah kartu "sedang dibuat" di grid (kerangka dengan rasio benar, efek
-  shimmer, nama model, waktu berjalan), cek status (gambar tiap 2 detik,
+  menambah kartu "sedang dibuat" di grid, cek status (gambar tiap 2 detik,
   video tiap 5 detik), lalu kartu jadi hasil. Maksimal 3 job bersamaan.
+- Kartu "sedang dibuat": rasio benar, efek shimmer, dan di BAGIAN ATAS kartu
+  (agar tidak tertutup composer) spinner, nama model, status, bar progres
+  dengan persen perkiraan (dari lama proses biasa tiap model, berhenti di 95%
+  sampai selesai), dan waktu berjalan.
+- Setelah Buat diklik, kosongkan prompt dan foto referensi di composer
+  (pengaturan model/rasio tetap). Kalau pengiriman gagal, kembalikan isinya.
 - Tombol Buat menampilkan biaya dari /api/quote ("Gratis" di mode demo).
 - Error tampil sebagai toast, kartu gagal punya tombol "Coba lagi".
 - Chip "Mode demo" di top bar. Jika server belum dikonfigurasi (tidak ada key
@@ -53,7 +58,8 @@ Commit "Alur studio mode demo".
 
 ## Cek hasil
 
-- [ ] Klik Buat: kartu kerangka muncul, lalu berubah jadi gambar contoh
+- [ ] Klik Buat: kartu progres (persen + waktu) muncul, prompt kosong lagi,
+      lalu kartu berubah jadi gambar contoh
 - [ ] Buat 3 sekaligus: semuanya berjalan bersamaan
 - [ ] Prompt kosong: muncul pesan yang jelas, tidak error
 - [ ] Chip "Mode demo" terlihat dan biaya tertulis "Gratis"
