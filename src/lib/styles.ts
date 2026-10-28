@@ -49,7 +49,7 @@ export type PosterRequest = {
   description: string;
   promo: string;
   style: (typeof styles)[number]["id"];
-  ratio: (typeof ratios)[number]["id"];
+  ratio: string;
   withPhoto: boolean;
 };
 

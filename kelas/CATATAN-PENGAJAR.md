@@ -35,12 +35,13 @@ Untuk kelas satu hari (±4 jam): sesi 1 → 3 → 4+5 (gabung) → 8, lalu sesi 
 
 | Aksi | Model | Perkiraan |
 |---|---|---|
-| Caption | `deepseek-v4-1-flash` | < Rp10 |
-| Poster dari teks | `z-image` | ±Rp84 |
-| Poster dari foto | `nano-banana-2-lite` | ±Rp416 |
+| Prompt otomatis | `deepseek-v4-1-flash` | < Rp10 |
+| Gambar dari teks | `z-image` | ±Rp84 |
+| Gambar dari foto | `nano-banana-2-lite` | ±Rp416 |
 | Video 5 detik 480p | `bytedance-seedance-2-mini` | ±Rp2.000 (720p ±Rp4.300) |
+| Video 6 detik 480p | `grok-imagine` | ±Rp1.500 |
 
-Saldo Rp10.000 per peserta cukup untuk poster; tambah ±Rp5.000 per peserta bila
+Saldo Rp10.000 per peserta cukup untuk latihan gambar; tambah ±Rp5.000 per peserta bila
 sesi 6b (video) dipraktikkan dengan AI sungguhan. Mode demo (`DEMO_MODE=true`)
 gratis, jadi pakai mode ini selama sesi 1–3.
 
@@ -61,7 +62,7 @@ Harga dapat berubah. Cek di https://yorai.id/docs/api/models.
 - **Agen menambah library.** Aturan `AGENTS.md` melarangnya tanpa izin. Kalau
   agen meminta izin, diskusikan di kelas: perlu atau tidak?
 - **Teks di poster typo.** Model gambar kadang salah mengeja. Ajarkan untuk
-  memakai *Buat variasi*, atau pendekkan headline.
+  memakai *Pakai prompt* lalu *Buat* lagi, atau pendekkan headline.
 - **Model AI sedang gangguan.** Pernah terjadi: `claude-haiku-5-5` mengembalikan
   error 500 dari penyedia. Aplikasi otomatis memakai caption cadangan. Model teks
   bisa diganti lewat env `YORAI_TEXT_MODEL` tanpa mengubah kode.
@@ -79,8 +80,8 @@ Harga dapat berubah. Cek di https://yorai.id/docs/api/models.
 
 ## Demo pembuka (5 menit)
 
-1. Buka aplikasi jadi (deploy milik pengajar), lalu buat poster "Keripik Tempe
-   Bu Sri".
+1. Buka aplikasi jadi (deploy milik pengajar), lalu pakai *Prompt otomatis*
+   untuk "Keripik Tempe Bu Sri", buat gambarnya, lalu *Animasikan*.
 2. Tunjukkan `AGENTS.md`: *"Ini satu-satunya 'kode' yang kita tulis: aturan
    dan cetak biru untuk AI."*
 3. Tunjukkan https://yorai.id/llms.txt: dokumentasi yang dibaca AI, bukan

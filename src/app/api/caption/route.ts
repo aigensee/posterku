@@ -1,8 +1,9 @@
 // Meminta AI teks menulis headline, caption, hashtag, dan prompt gambar.
 import { config } from "@/lib/config";
 import { checkPasscode, apiError, invalid } from "@/lib/guard";
-import { styles, ratios, type PosterRequest } from "@/lib/styles";
+import { styles, type PosterRequest } from "@/lib/styles";
 import { captionMessages, fallbackCaption, parseCaption } from "@/lib/prompts";
+import { models } from "@/lib/models";
 import { demoCaption } from "@/lib/demo";
 import { chat, YoraiError } from "@/lib/yorai";
 
@@ -21,7 +22,11 @@ export async function POST(request: Request) {
     if (!f || typeof f !== "object" || Array.isArray(f))
       invalid("Data permintaan tidak valid");
 
-    const fieldLabels = { product: "Nama produk", description: "Deskripsi", promo: "Promo" };
+    const fieldLabels = {
+      product: "Nama produk",
+      description: "Deskripsi",
+      promo: "Promo",
+    };
 
     for (const [key, max, required] of [
       ["product", 60, true],
@@ -40,7 +45,7 @@ export async function POST(request: Request) {
 
     if (
       !styles.some((s) => s.id === f.style) ||
-      !ratios.some((r) => r.id === f.ratio) ||
+      !models.some((m) => m.kind === f.kind && m.ratios.includes(f.ratio)) ||
       typeof f.withPhoto !== "boolean"
     )
       invalid("Gaya, rasio, atau pilihan foto tidak valid");

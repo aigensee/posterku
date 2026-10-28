@@ -18,7 +18,9 @@ export async function GET(
 
     if (!validId(id) && !demo) invalid("ID file tidak valid");
 
-    const upstream = demo ? null : await fetchFile(id, request.headers.get("range"));
+    const upstream = demo
+      ? null
+      : await fetchFile(id, request.headers.get("range"));
 
     const mime = demo
       ? "image/svg+xml"
@@ -51,7 +53,15 @@ export async function GET(
       );
     }
 
-    return new Response(demo ? demoPosterSvg(id) : upstream!.body, { headers, status: upstream?.status || 200 });
+    return new Response(
+      demo
+        ? demoPosterSvg(
+            id,
+            new URL(request.url).searchParams.get("still") === "1",
+          )
+        : upstream!.body,
+      { headers, status: upstream?.status || 200 },
+    );
   } catch (e) {
     return apiError(e);
   }

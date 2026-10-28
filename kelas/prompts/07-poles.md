@@ -1,28 +1,29 @@
 # Sesi 7: Poles sampai siap dipakai orang lain
 
-**Tujuan:** fitur-fitur kecil yang membuat aplikasi terasa profesional, plus
+**Tujuan:** fitur-fitur kecil yang membuat studio terasa profesional, plus
 pengaman sebelum dipublikasikan.
 **Waktu:** 45–60 menit. Kerjakan prompt satu per satu, dan simpan setiap
 selesai.
 
-## Prompt A: riwayat
+## Prompt A: riwayat dan viewer
 
 ```
-Tambahkan Riwayat: simpan 12 poster terakhir di localStorage (id job, id file,
-produk, headline, caption, hashtag, prompt gambar, rasio, gaya, biaya, tanggal,
-tanggal kedaluwarsa). Tampilkan sebagai grid thumbnail di bagian Riwayat; klik
-untuk membuka lagi di panel hasil. Jika gambar gagal dimuat, tampilkan label
-"Kedaluwarsa". Ada tombol "Hapus riwayat" dengan konfirmasi di dalam halaman
-(bukan alert browser). Bungkus akses localStorage dengan try/catch.
+Simpan 40 hasil terakhir di localStorage (id job, id file, jenis, model, prompt,
+rasio, durasi, biaya, tanggal, tanggal kedaluwarsa, caption bila ada) supaya
+grid tetap ada setelah refresh. Klik kartu membuka viewer: media besar dan
+panel detail (prompt, model, rasio/durasi, biaya, tanggal, "Tersimpan di Yorai
+sampai …", caption UMKM + tombol Salin caption). Jika file gagal dimuat,
+tampilkan label "Kedaluwarsa". Bungkus akses localStorage dengan try/catch.
 ```
 
-## Prompt B: aksi hasil
+## Prompt B: aksi kartu dan aktivitas
 
 ```
-Di panel hasil, tambahkan: "Salin caption" (menyalin caption + hashtag, lalu
-tombol berubah jadi "Tersalin!" 2 detik), "Buat variasi" (prompt sama, gambar
-baru), dan "Edit prompt" (textarea yang bisa dibuka-tutup, penghitung karakter
-maks 1000, tombol "Buat ulang").
+Di setiap kartu (muncul saat hover; selalu terlihat di HP): Unduh, Pakai prompt
+(mengembalikan prompt dan pengaturan ke composer), Animasikan (khusus gambar),
+dan Hapus dengan konfirmasi di dalam halaman (bukan alert browser). Tombol
+Aktivitas di top bar membuka panel kanan berisi job sesi ini (status, model,
+waktu, biaya).
 ```
 
 ## Prompt C: kode akses
@@ -39,15 +40,18 @@ membalas "Kode akses salah". Uji dengan APP_PASSCODE=kelas123 di .env.local.
 ```
 Lakukan audit akhir seperti reviewer profesional sebelum rilis:
 1. Keamanan: key hanya di server, semua route (kecuali status dan file) dicek
-   passcode, input divalidasi, tidak ada key di file yang di-commit.
-2. Tampilan: cek 390px, 768px, 1280px; keadaan kosong, loading, error, sukses.
-3. Aksesibilitas: label, fokus keyboard, kontras, teks alternatif gambar.
+   passcode, input divalidasi dengan models.ts, tidak ada key di file yang
+   di-commit.
+2. Tampilan: cek 390px, 768px, 1280px, tema gelap dan terang; keadaan kosong,
+   loading, error, sukses.
+3. Aksesibilitas: label, fokus keyboard, Esc menutup popover/modal, kontras,
+   teks alternatif gambar, prefers-reduced-motion.
 4. Lint, typecheck, build.
 Buat daftar temuan, perbaiki semuanya, lalu laporkan sebelum dan sesudah.
 ```
 
 ## Cek hasil
 
-- [ ] Refresh halaman: riwayat masih ada
+- [ ] Refresh halaman: grid masih ada
 - [ ] Salah memasukkan kode akses: dialog muncul lagi dengan pesan jelas
 - [ ] Audit tidak menyisakan temuan

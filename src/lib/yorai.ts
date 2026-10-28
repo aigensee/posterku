@@ -81,19 +81,10 @@ const post = (body: unknown): RequestInit => ({
 export type JobBody = {
   model: string;
   type: string;
-  input: { prompt: string; aspect_ratio: string; image_urls?: string[] };
-};
-
-export type VideoJobBody = {
-  model: string;
-  type: "text-to-video" | "image-to-video";
   input: {
     prompt: string;
     aspect_ratio: string;
-    duration: number;
-    resolution: "480p" | "720p";
-    generate_audio: boolean;
-    first_frame_url?: string;
+    [key: string]: string | number | boolean | string[];
   };
 };
 
@@ -133,10 +124,10 @@ export const chat = (
     },
   );
 
-export const quote = (body: JobBody | VideoJobBody) =>
+export const quote = (body: JobBody) =>
   yoraiFetch<{ credits: number }>("/quote", post(body));
 
-export const createJob = (body: JobBody | VideoJobBody) =>
+export const createJob = (body: JobBody) =>
   yoraiFetch<Job>("/jobs", {
     ...post(body),
     headers: { "Idempotency-Key": crypto.randomUUID() },

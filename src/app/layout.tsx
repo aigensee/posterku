@@ -1,15 +1,15 @@
 // Mengatur bahasa, font, dan metadata aplikasi PosterKu.
 import type { Metadata } from "next";
-import { Plus_Jakarta_Sans } from "next/font/google";
+import { Geist } from "next/font/google";
 import "./globals.css";
 
-const jakarta = Plus_Jakarta_Sans({
+const geist = Geist({
   subsets: ["latin"],
-  variable: "--font-jakarta",
+  variable: "--font-geist",
 });
 
 export const metadata: Metadata = {
-  title: "PosterKu — Poster promosi UMKM dengan AI",
+  title: "PosterKu Studio — Gambar & video promosi dengan AI",
   description:
     "Buat poster promosi menarik untuk usaha lokal dengan AI. Tulis produkmu, pilih gaya, dan unduh poster beserta caption dalam hitungan detik.",
 };
@@ -20,8 +20,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="id">
-      <body className={jakarta.variable}>{children}</body>
+    <html lang="id" data-theme="dark" suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{var t=localStorage.getItem('posterku.theme');document.documentElement.dataset.theme=['dark','light','system'].includes(t)?t:'dark'}catch(e){}`,
+          }}
+        />
+      </head>
+      <body className={geist.variable}>{children}</body>
     </html>
   );
 }

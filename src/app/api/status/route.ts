@@ -8,6 +8,6 @@ export async function GET() {
     configured,
     demo: config.demo,
     passcodeRequired: Boolean(config.passcode),
-    models: config.models,
+    textModel: config.models.text,
   });
 }

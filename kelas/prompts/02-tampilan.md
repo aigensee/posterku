@@ -1,57 +1,57 @@
-# Sesi 2: Tampilan profesional (belum pakai AI)
+# Sesi 2: Tampilan studio (belum pakai AI)
 
-**Tujuan:** halaman PosterKu yang cantik dengan form lengkap. Tombolnya belum
-melakukan apa-apa.
-**Waktu:** 45 menit.
+**Tujuan:** halaman PosterKu Studio yang terlihat seperti aplikasi kreatif
+sungguhan (mirip workspace Yorai). Tombolnya belum melakukan apa-apa.
+**Waktu:** 45–60 menit.
 
 ## Prompt
 
 ```
-Lanjutkan PosterKu (AGENTS.md). Langkah ini: buat TAMPILAN saja, belum ada
-panggilan ke AI atau API.
+Lanjutkan PosterKu (AGENTS.md). Langkah ini: buat TAMPILAN STUDIO saja, belum
+ada panggilan ke AI atau API. Contoh rasa tampilannya: workspace di yorai.id.
 
 Identitas visual:
-- Font Plus Jakarta Sans (next/font). Bahasa halaman: Indonesia (lang="id").
-- Latar putih gading hangat (#FAF7F2), teks hitam kecokelatan (#1C1917),
-  warna utama oranye koral (#E8553D), kartu putih dengan bayangan halus,
-  sudut membulat 16–20px. Simpan warna sebagai variabel tema di globals.css.
-- Ikon tab: SVG kotak membulat oranye dengan simbol kilau. Judul tab:
-  "PosterKu — Poster promosi UMKM dengan AI".
+- Font Geist (next/font/google). Bahasa halaman: Indonesia (lang="id").
+- Tema gelap sebagai bawaan, plus terang dan "ikuti sistem". Palet netral:
+  gelap latar #0b0b0c, permukaan #141416/#1b1b1f, garis #26262b, teks #f4f4f5
+  (redup #a1a1aa); terang latar #fafafa, permukaan #ffffff, garis #e4e4e7, teks
+  #18181b (redup #71717a). Warna aksen oranye koral #E8553D. Simpan semuanya
+  sebagai variabel tema di globals.css. Pilihan tema disimpan di localStorage
+  dan diterapkan sebelum halaman tampil (tanpa kedipan).
+- Judul tab: "PosterKu Studio — Gambar & video promosi dengan AI".
 
-Isi halaman (lebar maksimal 6xl, tengah, jarak tepi 16px di HP):
-1. Header: logo + tulisan PosterKu di kiri; di kanan, tempat untuk saldo kredit.
-2. Hero: judul "Poster promosi siap posting dalam hitungan detik" + satu
-   kalimat penjelasan.
-3. Dua kolom di desktop (form 5/12 menempel saat di-scroll, hasil 7/12), satu
-   kolom di HP:
-   - Form: Nama produk* (maks 60, penghitung karakter), Deskripsi singkat
-     (maks 500, contoh "Kopi susu gula aren, 250ml, tanpa pengawet"), Promo /
-     ajakan (opsional, maks 100, contoh "Diskon 20% khusus minggu ini"),
-     pilihan Gaya berupa kartu dengan gradasi warna kecil (Minimalis, Ceria,
-     Mewah, Retro, Natural; masing-masing punya tagline), pilihan Rasio berupa
-     tombol segmen dengan ikon bentuk (1:1 Feed, 3:4 Portrait, 9:16
-     Story/Reels, 16:9 Banner), area unggah Foto produk (opsional, seret &
-     lepas, ada pratinjau dan tombol hapus), tombol besar "Buat Poster".
-   - Panel hasil: keadaan kosong yang elegan, berupa kerangka poster dan
-     tulisan "Poster kamu akan muncul di sini".
-4. Bagian "Riwayat" di bawah (sementara kosong).
-5. Footer: "Dibuat dengan PosterKu · Ditenagai Yorai AI API" (link ke
-   https://yorai.id/docs/api).
+Susunan halaman:
+1. Rail ikon di kiri (64px): logo, ikon Studio, lalu di bawah tombol tema dan
+   link "Ditenagai Yorai" ke https://yorai.id/docs/api. Ikon SVG sendiri.
+2. Top bar: judul "Studio PosterKu"; di kanan tempat saldo kredit dan tombol
+   "Aktivitas".
+3. Tab filter berbentuk pill: Semua, Gambar, Video (dengan jumlah).
+4. Area hasil berupa grid masonry (3 kolom desktop, 2 kolom HP). Untuk sekarang
+   tampilkan keadaan kosong yang elegan + 3 contoh prompt yang bisa diklik.
+5. Composer melayang di bawah tengah (lebar maks 800px, sudut 20px): slot
+   "+ Foto referensi", kolom "Apa yang ingin kamu buat?" dengan penghitung
+   karakter, tombol "✦ Prompt otomatis", pill pengaturan (mis. "Z-Image · 1:1")
+   yang membuka popover berisi tab Gambar | Video, daftar model, grid rasio,
+   durasi, kualitas, dan suara; lalu tombol utama "Buat". Di HP composer
+   menempel di bawah layar dan popover jadi bottom sheet.
 
-Hapus semua sisa konten bawaan Next.js. Simpan daftar gaya dan rasio di
-src/lib/styles.ts agar bisa dipakai ulang. Cek di lebar 1280px dan 390px.
-Commit "Tampilan halaman utama".
+Buat src/lib/models.ts berisi daftar model terkurasi (lihat AGENTS.md bagian 5):
+z-image, nano-banana-2-lite (gambar), bytedance-seedance-2-mini, grok-imagine
+(video), dengan rasio, durasi, dan resolusi masing-masing. Popover membaca
+daftar ini. Hapus semua sisa konten bawaan Next.js. Cek di 1280px dan 390px.
+Commit "Tampilan studio".
 ```
 
 ## Cek hasil
 
 - [ ] Terlihat seperti produk sungguhan, bukan template
-- [ ] Di HP (390px) tidak ada scroll ke samping
-- [ ] Memilih gaya dan rasio terlihat jelas mana yang aktif
-- [ ] Bisa pindah antar-input dengan tombol Tab, dan fokusnya terlihat
+- [ ] Ganti tema gelap/terang bekerja dan tetap setelah refresh
+- [ ] Popover pengaturan: ganti Gambar ↔ Video mengubah daftar model dan rasio
+- [ ] Di HP (390px) tidak ada scroll ke samping dan composer tidak menutupi isi
+- [ ] Bisa berpindah dengan tombol Tab, fokusnya terlihat, Esc menutup popover
 
 ## Latihan kreatif (opsional)
 
-Minta perubahan visual dengan bahasamu sendiri, misalnya: *"Buat lebih
-premium, seperti aplikasi desain"* atau *"ganti warna utama jadi hijau
-daun"*. Simpan (`/simpan`) sebelum bereksperimen.
+Minta perubahan visual dengan bahasamu sendiri, misalnya *"ganti warna aksen
+jadi hijau daun"* atau *"buat composer lebih ramping"*. Simpan (`/simpan`)
+sebelum bereksperimen.

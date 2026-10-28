@@ -1,41 +1,41 @@
-# Sesi 6b: Video promo (text-to-video & image-to-video)
+# Sesi 6b: Video promo (text-to-video & Animasikan)
 
-**Tujuan:** selain poster, aplikasi bisa membuat video promo pendek, baik dari
-nol maupun dengan menganimasikan poster yang sudah jadi.
-**Biaya:** Seedance 2 Mini ±0,4 kredit/detik (480p), jadi video 5 detik ≈ Rp2.000.
-720p sekitar dua kali lipat. Selalu cek perkiraan biaya di aplikasi.
+**Tujuan:** composer bisa membuat video promo pendek, dari nol maupun dengan
+menganimasikan gambar yang sudah jadi.
+**Biaya:** Seedance 2 Mini ±0,4 kredit/detik (480p), jadi video 5 detik ≈
+Rp2.000; 720p sekitar dua kali lipat. Grok Imagine ±0,25 kredit/detik (480p).
+Selalu cek biaya di tombol Buat.
 **Waktu:** 60 menit.
 
 ## Konsep yang dijelaskan pengajar
 
 - **Text-to-video:** AI membuat video hanya dari deskripsi.
-- **Image-to-video:** AI menggerakkan sebuah gambar (foto produk atau poster)
-  yang dijadikan *frame pertama*.
+- **Image-to-video:** AI menggerakkan sebuah gambar (foto produk atau hasil
+  gambar) yang dijadikan *frame pertama*.
 - Video jauh lebih mahal dan lebih lama dibanding gambar (1–3 menit). Karena itu
-  aplikasi wajib **menampilkan perkiraan biaya sebelum tombol diklik**.
+  aplikasi wajib **menampilkan biaya sebelum tombol diklik**.
 
 ## Prompt
 
 ```
-Lanjutkan PosterKu (AGENTS.md). Langkah ini: fitur VIDEO PROMO memakai model
-Yorai bytedance-seedance-2-mini (env YORAI_VIDEO_MODEL). Baca dulu
-https://yorai.id/docs/api/models/bytedance-seedance-2-mini.md untuk nama input,
-rasio, durasi, dan resolusinya.
+Lanjutkan PosterKu (AGENTS.md). Langkah ini: tab VIDEO di composer.
 
-1. Di atas form, tambahkan pilihan mode "Poster" | "Video". Mode Video memakai
-   form yang sama + pilihan Durasi (5/10 detik), Kualitas (Hemat 480p / HD 720p),
-   dan "Dengan suara AI". Tampilkan perkiraan biaya langsung dari POST /quote.
-2. AI teks juga menulis video_prompt (gerakan kamera & produk, bahasa Inggris).
-   Siapkan cadangannya juga, seperti caption cadangan.
-3. Tanpa foto: text-to-video. Dengan foto produk: image-to-video, foto sebagai
-   first_frame_url (ID dari POST /files).
-4. Di hasil poster, tambahkan tombol "Animasikan poster": poster dijadikan
-   frame pertama video. Server mengunduh poster lalu meng-upload ulang ke
-   POST /files, dan memakai ID barunya.
-5. Video dicek tiap 5 detik (maksimal 10 menit). Tampilkan pemutar video,
-   tombol Unduh MP4, dan catatan "Video biasanya selesai 1–3 menit".
-6. /api/file harus mendukung header Range agar video bisa diputar dan digeser.
-7. Mode demo: video palsu (poster contoh dengan animasi zoom pelan).
+Baca dulu https://yorai.id/docs/api/models/bytedance-seedance-2-mini.md dan
+https://yorai.id/docs/api/models/grok-imagine.md untuk nama input, rasio,
+durasi, dan resolusinya, lalu lengkapi entrinya di src/lib/models.ts.
+
+1. Tab Video di popover pengaturan: pilihan model, rasio, Durasi, Kualitas
+   (480p/720p), dan toggle "Suara AI" (hanya untuk model yang mendukung).
+   Biaya di tombol Buat diperbarui saat pilihan berubah.
+2. Slot referensi berubah jadi "+ Frame awal" untuk model video.
+3. Di kartu gambar, tombol "Animasikan": gambar itu jadi frame awal dan composer
+   pindah ke Video. Server mengunduh gambar itu lalu meng-upload ulang ke
+   POST /files dan memakai ID barunya (sourceFileId).
+4. Video dicek tiap 5 detik (maksimal 10 menit). Kartu video punya tanda ▶,
+   diputar tanpa suara saat kursor di atasnya; viewer menampilkan pemutar
+   dan tombol Unduh MP4.
+5. /api/file harus meneruskan header Range agar video bisa diputar dan digeser.
+6. Prompt otomatis juga menulis prompt video (gerakan kamera & produk).
 
 Uji di mode demo dulu. Lalu uji SEKALI video sungguhan 5 detik 480p dan
 sebutkan biayanya sebelum mulai. Commit "Fitur video promo".
@@ -43,14 +43,14 @@ sebutkan biayanya sebelum mulai. Commit "Fitur video promo".
 
 ## Cek hasil
 
-- [ ] Perkiraan biaya berubah saat durasi/kualitas diganti
+- [ ] Biaya berubah saat durasi/kualitas diganti
 - [ ] Video bisa diputar di HP dan bisa diunduh
-- [ ] "Animasikan poster" menghasilkan video yang diawali poster tersebut
-- [ ] Riwayat menampilkan video dengan tanda ▶
+- [ ] "Animasikan" menghasilkan video yang diawali gambar tersebut
+- [ ] Tab Video di grid hanya menampilkan video
 
 ## Diskusi
 
 - Kenapa harga ditampilkan sebelum klik? Video 10 detik 720p bisa ±Rp8.500.
   Pengguna harus tahu sebelum membayar.
-- Kenapa poster di-upload ulang? API hanya menerima file milik kita yang
+- Kenapa gambar di-upload ulang? API hanya menerima file milik kita yang
   diunggah lewat `POST /files` sebagai input.

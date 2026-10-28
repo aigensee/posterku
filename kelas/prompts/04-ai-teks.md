@@ -1,6 +1,7 @@
-# Sesi 4: Menyambungkan AI teks (caption)
+# Sesi 4: Menyambungkan AI teks (Prompt otomatis)
 
-**Tujuan:** headline, caption, dan hashtag ditulis oleh AI sungguhan.
+**Tujuan:** tombol "Prompt otomatis" memakai AI sungguhan: dari nama produk,
+AI menulis prompt gambar/video plus headline, caption, dan hashtag.
 **Biaya:** sangat kecil (DeepSeek V4.1 Flash, kurang dari Rp10 per caption).
 **Waktu:** 30–45 menit.
 
@@ -23,18 +24,23 @@ Baca dulu https://yorai.id/llms.txt dan https://yorai.id/docs/api/llms-full.txt.
   saldo kurang + link yorai.id/app/credits, 429 terlalu cepat, 503 API tidak
   aktif, 504 waktu habis, gagal koneksi).
 - Buat src/lib/prompts.ts: instruksi agar AI membalas JSON
-  {headline, caption, hashtags, image_prompt}. Headline maksimal 6 kata
+  {headline, caption, hashtags, image_prompt, video_prompt}. Headline maksimal 6 kata
   bahasa Indonesia. Caption bahasa Indonesia, 2–4 kalimat pendek + ajakan,
   memakai teks promo. 5–8 hashtag. image_prompt dalam bahasa Inggris, maksimal
   900 karakter, mendeskripsikan poster promosi profesional sesuai gaya dan
-  rasio, memuat headline dalam tanda kutip sebagai tipografi besar. Buat
+  rasio, memuat headline dalam tanda kutip sebagai tipografi besar.
+  video_prompt bahasa Inggris, maksimal 600 karakter: gerakan kamera & produk. Buat
   parser JSON yang tahan banting (abaikan ``` dan teks di luar kurung kurawal).
 - /api/caption memakai POST /chat/completions dengan model YORAI_TEXT_MODEL
   (maxDuration 60 detik). Mode demo tetap berfungsi saat DEMO_MODE=true.
+- Asisten "Prompt otomatis" (modal): Nama produk*, Deskripsi, Promo, Gaya (5
+  pilihan dari src/lib/styles.ts). Hasilnya mengisi kolom prompt composer
+  (prompt gambar atau video sesuai tab), dan caption ikut terlampir ke hasil
+  berikutnya (chip "Caption UMKM terlampir ✕").
 - Kalau AI teks gagal atau lebih dari 40 detik (kecuali API key salah atau
-  saldo habis), pakai caption + prompt gambar cadangan dari template supaya
-  poster tetap dibuat, dan tampilkan catatan kecil "Caption dibuat otomatis".
-- Gambar MASIH memakai demo dulu.
+  saldo habis), pakai caption + prompt cadangan dari template, dan tampilkan
+  catatan kecil "Caption dibuat otomatis".
+- Gambar dan video MASIH memakai demo dulu.
 
 Uji SEKALI dengan AI sungguhan (produk: "Keripik Tempe Bu Sri", promo: "Beli 2
 gratis 1"), tunjukkan caption yang dihasilkan. Commit "Caption dari AI".

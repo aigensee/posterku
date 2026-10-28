@@ -1,65 +1,55 @@
-// Memeriksa perkiraan biaya dan memulai pembuatan poster.
+// Membuat gambar atau video setelah memeriksa referensi dan biaya.
+import { checkPasscode, apiError, invalid } from "@/lib/guard";
 import { config } from "@/lib/config";
-import { checkPasscode, apiError, invalid, validId } from "@/lib/guard";
-import { ratios, styles } from "@/lib/styles";
+import { studioBody } from "@/lib/jobs";
 import { createDemo } from "@/lib/demo";
-import { photoPrompt } from "@/lib/prompts";
-import { quote, createJob, clientJob, type JobBody } from "@/lib/yorai";
+import {
+  quote,
+  createJob,
+  clientJob,
+  fetchFile,
+  uploadFile,
+} from "@/lib/yorai";
 
 export const runtime = "nodejs";
+export const maxDuration = 60;
 
 export async function POST(request: Request) {
   const denied = checkPasscode(request);
-
   if (denied) return denied;
-
   try {
-    const f = await request.json();
-
-    if (!f || typeof f !== "object" || Array.isArray(f))
-      invalid("Data permintaan tidak valid");
-
-    if (
-      typeof f.prompt !== "string" ||
-      !f.prompt.trim() ||
-      f.prompt.length > 1000 ||
-      !ratios.some((r) => r.id === f.ratio)
-    )
-      invalid("Prompt harus 1–1000 karakter dan rasio harus valid");
-
-    if (
-      f.photoFileId !== undefined &&
-      (typeof f.photoFileId !== "string" ||
-        !(
-          validId(f.photoFileId) ||
-          (config.demo && f.photoFileId === "demo-photo")
-        ))
-    )
-      invalid("ID foto tidak valid");
-
-    if (f.style !== undefined && !styles.some((s) => s.id === f.style)) {
-      invalid("Gaya poster tidak valid");
-    }
-
-    if (config.demo) {
+    const { body, model, sourceFileId } = studioBody(await request.json());
+    if (config.demo)
       return Response.json({
-        job: createDemo(f.prompt, f.ratio, f.style),
+        job: createDemo(
+          body.input.prompt,
+          body.input.aspect_ratio,
+          "minimalis",
+          model.kind === "video",
+        ),
         quotedCredits: 0,
       });
+    if (sourceFileId) {
+      const response = await fetchFile(sourceFileId);
+      const blob = await response.blob();
+      const extensions: Record<string, string> = {
+        "image/png": "png",
+        "image/jpeg": "jpg",
+        "image/webp": "webp",
+      };
+      const extension = extensions[blob.type];
+      if (!extension || blob.size > 30 * 1024 * 1024)
+        invalid(
+          "Referensi harus berupa gambar JPG, PNG, atau WebP maksimal 30 MB",
+        );
+      const form = new FormData();
+      form.set("file", blob, `referensi.${extension}`);
+      const uploaded = await uploadFile(form);
+      body.input[model.imageField!] = model.imageFieldIsArray
+        ? [uploaded.id]
+        : uploaded.id;
     }
-
-    const body: JobBody = {
-      model: f.photoFileId ? config.models.photo : config.models.image,
-      type: f.photoFileId ? "image-to-image" : "text-to-image",
-      input: {
-        prompt: f.photoFileId ? photoPrompt(f.prompt) : f.prompt,
-        aspect_ratio: f.ratio,
-        ...(f.photoFileId ? { image_urls: [f.photoFileId] } : {}),
-      },
-    };
-
     const price = await quote(body);
-
     return Response.json({
       job: clientJob(await createJob(body)),
       quotedCredits: price.credits,

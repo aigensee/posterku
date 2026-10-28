@@ -28,9 +28,12 @@ export function fallbackCaption(form: PosterRequest): CaptionResult {
     retro: ["#Retro", "#Klasik"],
     natural: ["#Natural", "#Organik"],
   };
-  const compositions = {
+  const compositions: Record<string, string> = {
     "1:1": "square feed composition",
     "3:4": "vertical portrait composition",
+    "4:3": "landscape composition",
+    "2:3": "vertical portrait composition",
+    "3:2": "landscape composition",
     "9:16": "vertical story composition with space at top and bottom",
     "16:9": "wide banner composition",
   };
@@ -38,7 +41,8 @@ export function fallbackCaption(form: PosterRequest): CaptionResult {
   const promo = form.promo.trim().replace(/[.!?]+$/, "");
   const details = description || `Pilihan istimewa untuk kebutuhanmu`;
   const offer = promo ? `, dengan promo ${promo}` : "";
-  const productTag = form.product.replace(/[^\p{L}\p{N}_]/gu, "") || "ProdukPilihan";
+  const productTag =
+    form.product.replace(/[^\p{L}\p{N}_]/gu, "") || "ProdukPilihan";
   const imagePrompt = [
     `Professional promotional poster for ${form.product.trim()}.`,
     `${compositions[form.ratio]}.`,
@@ -46,12 +50,20 @@ export function fallbackCaption(form: PosterRequest): CaptionResult {
     `Headline "${headline.replace(/"/g, "'")}" as large bold typography.`,
     promo ? `Promo text: "${promo.replace(/"/g, "'")}".` : "",
     description ? `Product description: ${description}.` : "",
-  ].filter(Boolean).join(" ").slice(0, 900);
+  ]
+    .filter(Boolean)
+    .join(" ")
+    .slice(0, 900);
 
   return {
     headline,
     caption: `Kenali ${form.product.trim()}, pilihan tepat untukmu! ${details}${offer}. Pesan sekarang!`,
-    hashtags: ["#UMKM", "#ProdukLokal", `#${productTag}`, ...styleHashtags[form.style]],
+    hashtags: [
+      "#UMKM",
+      "#ProdukLokal",
+      `#${productTag}`,
+      ...styleHashtags[form.style],
+    ],
     imagePrompt,
     videoPrompt: motionPrompt(`${form.product}. ${style.promptHint}`),
   };
@@ -73,12 +85,18 @@ export function parseCaption(text: string): CaptionResult {
     throw new Error("Format caption AI tidak valid");
   }
 
-  const rawHashtags: unknown[] = Array.isArray(data.hashtags) ? data.hashtags : [];
-  const hashtags = [...new Set(rawHashtags
-    .filter((tag): tag is string => typeof tag === "string")
-    .map((tag) => tag.trim().replace(/\s+/g, "").replace(/^#+/, ""))
-    .filter(Boolean)
-    .map((tag) => `#${tag}`))].slice(0, 8);
+  const rawHashtags: unknown[] = Array.isArray(data.hashtags)
+    ? data.hashtags
+    : [];
+  const hashtags = [
+    ...new Set(
+      rawHashtags
+        .filter((tag): tag is string => typeof tag === "string")
+        .map((tag) => tag.trim().replace(/\s+/g, "").replace(/^#+/, ""))
+        .filter(Boolean)
+        .map((tag) => `#${tag}`),
+    ),
+  ].slice(0, 8);
 
   let videoPrompt = motionPrompt(data.image_prompt);
 
@@ -86,7 +104,10 @@ export function parseCaption(text: string): CaptionResult {
     videoPrompt = data.video_prompt.trim().slice(0, 600);
 
   return {
-    headline: typeof data.headline === "string" ? data.headline.trim().split(/\s+/).slice(0, 6).join(" ") : "",
+    headline:
+      typeof data.headline === "string"
+        ? data.headline.trim().split(/\s+/).slice(0, 6).join(" ")
+        : "",
     caption: data.caption.trim(),
     hashtags: hashtags.length ? hashtags : ["#UMKM", "#ProdukLokal"],
     imagePrompt: data.image_prompt.trim().slice(0, 1000),
@@ -101,7 +122,12 @@ export const photoPrompt = (prompt: string) =>
   );
 
 export function motionPrompt(imagePrompt: string) {
-  const subject = imagePrompt.replace(/Headline .*?(?:\.|$)/gi, "").replace(/Promo text:.*?(?:\.|$)/gi, "");
+  const subject = imagePrompt
+    .replace(/Headline .*?(?:\.|$)/gi, "")
+    .replace(/Promo text:.*?(?:\.|$)/gi, "");
 
-  return `Create a 5–10 second product promo. Slow camera push-in and gentle orbit, subtle natural product motion and shifting studio light. Preserve product identity. No added text. Visual reference: ${subject}`.slice(0, 600);
+  return `Create a 5–10 second product promo. Slow camera push-in and gentle orbit, subtle natural product motion and shifting studio light. Preserve product identity. No added text. Visual reference: ${subject}`.slice(
+    0,
+    600,
+  );
 }

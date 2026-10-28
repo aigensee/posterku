@@ -1,7 +1,7 @@
 # Kelas: membuat Generator AI tanpa ngoding
 
-Studi kasus: **PosterKu**, generator poster promosi UMKM yang memakai API
-Yorai (AI teks + AI gambar) dan dipublikasikan gratis di Vercel. Dibangun
+Studi kasus: **PosterKu Studio**, studio gambar & video promosi UMKM yang
+memakai API Yorai (AI teks + AI gambar + AI video) dan dipublikasikan gratis di Vercel. Dibangun
 sepenuhnya dengan memberi instruksi ke agen AI (**Google Antigravity** atau
 **ChatGPT Codex**).
 
@@ -13,13 +13,13 @@ sepenuhnya dengan memberi instruksi ke agen AI (**Google Antigravity** atau
 | — | [ATURAN-PAKAI.md](ATURAN-PAKAI.md) | **baca dulu**: 10 aturan emas + rumus prompt |
 | — | [CARA-PAKAI-AGENTS.md](CARA-PAKAI-AGENTS.md) | langkah demi langkah memakai `AGENTS.md` di Antigravity/Codex |
 | 1 | [prompts/01-proyek-awal.md](prompts/01-proyek-awal.md) | proyek berjalan di localhost |
-| 2 | [prompts/02-tampilan.md](prompts/02-tampilan.md) | halaman profesional |
+| 2 | [prompts/02-tampilan.md](prompts/02-tampilan.md) | tampilan studio (rail, grid, composer) |
 | 3 | [prompts/03-mode-demo.md](prompts/03-mode-demo.md) | alur lengkap tanpa biaya |
-| 4 | [prompts/04-ai-teks.md](prompts/04-ai-teks.md) | caption dari AI sungguhan |
-| 5 | [prompts/05-ai-gambar.md](prompts/05-ai-gambar.md) | poster dari AI sungguhan |
-| 6 | [prompts/06-foto-produk.md](prompts/06-foto-produk.md) | poster dari foto produk |
-| 6b | [prompts/06b-video.md](prompts/06b-video.md) | video promo (text-to-video & animasikan poster) |
-| 7 | [prompts/07-poles.md](prompts/07-poles.md) | riwayat, aksi, kode akses, audit |
+| 4 | [prompts/04-ai-teks.md](prompts/04-ai-teks.md) | Prompt otomatis dari AI sungguhan |
+| 5 | [prompts/05-ai-gambar.md](prompts/05-ai-gambar.md) | gambar dari AI sungguhan |
+| 6 | [prompts/06-foto-produk.md](prompts/06-foto-produk.md) | gambar dari foto produk |
+| 6b | [prompts/06b-video.md](prompts/06b-video.md) | video promo (text-to-video & Animasikan) |
+| 7 | [prompts/07-poles.md](prompts/07-poles.md) | riwayat, viewer, aksi kartu, kode akses, audit |
 | 8 | [prompts/08-publish.md](prompts/08-publish.md) + [PUBLISH-VERCEL.md](PUBLISH-VERCEL.md) | online di `.vercel.app` |
 | 9 | [prompts/09-kembangkan.md](prompts/09-kembangkan.md) | fitur tantangan |
 | — | [PROMPT-DARURAT.md](PROMPT-DARURAT.md) | saat error, tampilan rusak, atau AI berputar-putar |

@@ -73,34 +73,44 @@ Sebuah tugas belum selesai sebelum semua ini terpenuhi:
 
 ## 5. Tentang produk ini
 
-PosterKu membuat poster promosi untuk UMKM:
+PosterKu Studio adalah studio gambar & video promosi untuk UMKM, dengan
+tampilan seperti workspace Yorai:
 
-1. Pengguna mengisi nama produk, deskripsi, promo, gaya, rasio, dan foto
-   produk (opsional).
-2. AI teks menulis headline, caption, hashtag, dan prompt gambar
-   (`/api/caption`). Kalau AI teks gagal atau lebih dari 40 detik, server
-   memakai caption cadangan (`fallbackCaption`) supaya poster tetap dibuat.
-3. AI gambar membuat poster (`/api/generate`), lalu browser mengecek status
-   job setiap 2 detik (`/api/jobs/[id]`).
-4. Mode Video (atau tombol "Animasikan poster") membuat video promo lewat
-   `/api/video` (text-to-video, atau image-to-video dengan foto/poster sebagai
-   frame pertama). Perkiraan biaya dari `/api/video/quote` wajib tampil
-   sebelum pengguna menekan tombol.
-5. Poster/video tampil dan bisa diunduh lewat proxy `/api/file/[id]`. Riwayat
-   disimpan di localStorage browser.
+1. **Composer** melayang di bawah layar: slot referensi (foto/frame awal),
+   kolom prompt, tombol "Prompt otomatis", pill pengaturan (Gambar | Video,
+   model, rasio, durasi, kualitas, suara), dan tombol **Buat** yang menampilkan
+   biaya dari `/api/quote` sebelum diklik.
+2. **Prompt otomatis** (asisten UMKM): nama produk, deskripsi, promo, gaya →
+   AI teks menulis prompt + headline/caption/hashtag (`/api/caption`). Kalau AI
+   teks gagal atau lebih dari 40 detik, server memakai caption cadangan
+   (`fallbackCaption`).
+3. `/api/generate` membuat job gambar/video; browser mengecek `/api/jobs/[id]`
+   (gambar tiap 2 detik, video tiap 5 detik). Maksimal 3 job berjalan bersamaan.
+4. **Grid masonry** dengan tab Semua/Gambar/Video. Kartu bisa Unduh, Pakai
+   prompt, Animasikan (gambar → frame awal video), Hapus; klik membuka viewer
+   berisi detail dan caption. File lewat proxy `/api/file/[id]`. Riwayat di
+   localStorage browser.
+5. Tema gelap (bawaan), terang, dan sistem.
+
+**Daftar model ada di `src/lib/models.ts`.** Untuk menambah model: baca
+halaman `.md` model itu, lalu tambahkan entrinya (rasio, tipe, nama field
+gambar, durasi, resolusi). UI dan server otomatis mengikutinya.
 
 Peta kode:
 
 | Lokasi | Isi |
 |---|---|
 | `src/lib/config.ts` | membaca environment variable |
+| `src/lib/models.ts` | daftar model terkurasi (dipakai UI + server) |
+| `src/lib/jobs.ts` | menyusun body job Yorai dari pilihan composer |
 | `src/lib/yorai.ts` | semua panggilan ke API Yorai + pesan error ramah |
 | `src/lib/guard.ts` | cek kode akses (`APP_PASSCODE`) |
-| `src/lib/prompts.ts` | instruksi untuk AI teks |
-| `src/lib/styles.ts` | daftar gaya, rasio, dan tipe data bersama |
+| `src/lib/prompts.ts` | instruksi AI teks + caption cadangan |
+| `src/lib/styles.ts` | gaya visual UMKM dan tipe data bersama |
 | `src/lib/demo.ts` | mode demo tanpa kredit |
 | `src/app/api/*` | route server (penghubung browser ↔ Yorai) |
-| `src/components/*` | tampilan (form, hasil, riwayat, dll.) |
+| `src/components/useStudio.ts` | state studio: composer, job, riwayat |
+| `src/components/*` | tampilan (rail, top bar, grid, composer, viewer, dll.) |
 
 ## 6. API Yorai
 
@@ -117,8 +127,6 @@ yang memanggil Yorai.** Detail tiap model ada di
   (body sama).
 - File: `POST /files` (upload), `GET /files/{id}` (unduh, butuh key; hasil
   hilang setelah 14 hari).
-- Model default: teks `deepseek-v4-1-flash`, gambar `z-image`
-  (`text-to-image`), foto produk `nano-banana-2-lite` (`image-to-image`,
-  `image_urls`), video `bytedance-seedance-2-mini` (`text-to-video` /
-  `image-to-video` dengan `first_frame_url`). Kalau mengganti model, cek dulu nama input dan rasio yang
-  didukung di halaman `.md` model tersebut.
+- Model teks (asisten) default `deepseek-v4-1-flash` (env `YORAI_TEXT_MODEL`).
+  Model gambar/video ada di `src/lib/models.ts`. Kalau menambah atau mengganti
+  model, cek dulu nama input, tipe, dan rasio di halaman `.md` model tersebut.
