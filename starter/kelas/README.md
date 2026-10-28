@@ -11,6 +11,7 @@ sepenuhnya dengan memberi instruksi ke agen AI (**Google Antigravity** atau
 |---|---|---|
 | 0 | [00-PERSIAPAN.md](00-PERSIAPAN.md) | akun, alat, API key, starter kit |
 | — | [ATURAN-PAKAI.md](ATURAN-PAKAI.md) | **baca dulu**: 10 aturan emas + rumus prompt |
+| — | [CARA-PAKAI-AGENTS.md](CARA-PAKAI-AGENTS.md) | langkah demi langkah memakai `AGENTS.md` di Antigravity/Codex |
 | 1 | [prompts/01-proyek-awal.md](prompts/01-proyek-awal.md) | proyek berjalan di localhost |
 | 2 | [prompts/02-tampilan.md](prompts/02-tampilan.md) | halaman profesional |
 | 3 | [prompts/03-mode-demo.md](prompts/03-mode-demo.md) | alur lengkap tanpa biaya |
