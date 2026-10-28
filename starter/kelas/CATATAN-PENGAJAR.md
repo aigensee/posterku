@@ -34,7 +34,7 @@ Untuk kelas satu hari (±4 jam): sesi 1 → 3 → 4+5 (gabung) → 8, lalu sesi 
 
 | Aksi | Model | Perkiraan |
 |---|---|---|
-| Caption | `claude-haiku-5-5` | < Rp10 |
+| Caption | `deepseek-v4-1-flash` | < Rp10 |
 | Poster dari teks | `z-image` | ±Rp84 |
 | Poster dari foto | `nano-banana-2-lite` | ±Rp416 |
 
@@ -59,6 +59,9 @@ Harga dapat berubah. Cek di https://yorai.id/docs/api/models.
   agen meminta izin, diskusikan di kelas: perlu atau tidak?
 - **Teks di poster typo.** Model gambar kadang salah mengeja. Ajarkan untuk
   memakai *Buat variasi*, atau pendekkan headline.
+- **Model AI sedang gangguan.** Pernah terjadi: `claude-haiku-5-5` mengembalikan
+  error 500 dari penyedia. Aplikasi otomatis memakai caption cadangan. Model teks
+  bisa diganti lewat env `YORAI_TEXT_MODEL` tanpa mengubah kode.
 - **Codex web tidak bisa membuka localhost.** Peserta Codex web mengecek lewat
   *preview deployment* Vercel di setiap pull request.
 

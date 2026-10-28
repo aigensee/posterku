@@ -43,7 +43,7 @@ async function request(path: string, init: RequestInit = {}) {
       ...init,
       headers,
       cache: "no-store",
-      signal: AbortSignal.timeout(95000),
+      signal: init.signal ?? AbortSignal.timeout(95000),
     });
   } catch {
     throw new YoraiError(
@@ -108,10 +108,16 @@ export function clientJob(job: Job): PosterJob {
   };
 }
 
-export const chat = (messages: { role: string; content: string }[]) =>
+export const chat = (
+  messages: { role: string; content: string }[],
+  timeout = 95000,
+) =>
   yoraiFetch<{ choices: { message: { content: string } }[] }>(
     "/chat/completions",
-    post({ model: config.models.text, messages, max_tokens: 1600 }),
+    {
+      ...post({ model: config.models.text, messages, max_tokens: 1600 }),
+      signal: AbortSignal.timeout(timeout),
+    },
   );
 
 export const quote = (body: JobBody) =>

@@ -13,7 +13,7 @@ dipublikasikan gratis di Vercel.
 
 ## Fitur
 
-- Caption, headline, dan hashtag bahasa Indonesia dari AI teks (`claude-haiku-5-5`)
+- Caption, headline, dan hashtag bahasa Indonesia dari AI teks (`deepseek-v4-1-flash`), dengan caption cadangan otomatis bila AI teks sedang gangguan
 - Poster dari AI gambar (`z-image`), atau dari foto produk asli (`nano-banana-2-lite`)
 - 5 gaya visual dan 4 rasio (Feed, Portrait, Story/Reels, Banner)
 - Progres langkah demi langkah, unduh, salin caption, buat variasi, edit prompt
@@ -45,7 +45,7 @@ Tidak bisa ngoding? Buka folder ini di Antigravity atau Codex dan ketik
 | `APP_PASSCODE` | disarankan | kode akses untuk memakai aplikasi |
 | `DEMO_MODE` | tidak | `true` = hasil contoh, tanpa memanggil Yorai |
 | `YORAI_BASE_URL` | tidak | bawaan `https://yorai.id/api/v1` |
-| `YORAI_TEXT_MODEL` | tidak | bawaan `claude-haiku-5-5` |
+| `YORAI_TEXT_MODEL` | tidak | bawaan `deepseek-v4-1-flash` |
 | `YORAI_IMAGE_MODEL` | tidak | bawaan `z-image` |
 | `YORAI_PHOTO_MODEL` | tidak | bawaan `nano-banana-2-lite` |
 

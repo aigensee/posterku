@@ -1,7 +1,7 @@
 # Sesi 4: Menyambungkan AI teks (caption)
 
 **Tujuan:** headline, caption, dan hashtag ditulis oleh AI sungguhan.
-**Biaya:** sangat kecil (Claude Haiku, kurang dari Rp10 per caption).
+**Biaya:** sangat kecil (DeepSeek V4.1 Flash, kurang dari Rp10 per caption).
 **Waktu:** 30–45 menit.
 
 ## Langkah manual (satu-satunya yang kamu lakukan sendiri)
@@ -31,6 +31,9 @@ Baca dulu https://yorai.id/llms.txt dan https://yorai.id/docs/api/llms-full.txt.
   parser JSON yang tahan banting (abaikan ``` dan teks di luar kurung kurawal).
 - /api/caption memakai POST /chat/completions dengan model YORAI_TEXT_MODEL
   (maxDuration 60 detik). Mode demo tetap berfungsi saat DEMO_MODE=true.
+- Kalau AI teks gagal atau lebih dari 40 detik (kecuali API key salah atau
+  saldo habis), pakai caption + prompt gambar cadangan dari template supaya
+  poster tetap dibuat, dan tampilkan catatan kecil "Caption dibuat otomatis".
 - Gambar MASIH memakai demo dulu.
 
 Uji SEKALI dengan AI sungguhan (produk: "Keripik Tempe Bu Sri", promo: "Beli 2
@@ -44,6 +47,9 @@ gratis 1"), tunjukkan caption yang dihasilkan. Commit "Caption dari AI".
       "API key salah", bukan error teknis. Kembalikan key-nya setelah itu.
 
 ## Diskusi
+
+- Kenapa perlu caption cadangan? Model AI di penyedia bisa sedang gangguan.
+  Aplikasi profesional tetap jalan walau satu bagian bermasalah.
 
 Bagian "instruksi untuk AI" (`prompts.ts`) adalah **resep rahasia** produkmu.
 Coba minta AI mengubah gaya bahasanya: lebih santai, lebih Gen Z, atau formal.

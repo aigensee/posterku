@@ -611,6 +611,10 @@ small {
   color: #62584e;
   white-space: pre-wrap;
 }
+.caption-card .caption-note {
+  color: var(--muted);
+  font-size: 10px;
+}
 .hashtags {
   display: flex;
   gap: 5px;

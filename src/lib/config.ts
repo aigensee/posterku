@@ -6,7 +6,7 @@ export const config = {
     "",
   ),
   models: {
-    text: process.env.YORAI_TEXT_MODEL || "claude-haiku-5-5",
+    text: process.env.YORAI_TEXT_MODEL || "deepseek-v4-1-flash",
     image: process.env.YORAI_IMAGE_MODEL || "z-image",
     photo: process.env.YORAI_PHOTO_MODEL || "nano-banana-2-lite",
   },

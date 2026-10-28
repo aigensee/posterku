@@ -1,4 +1,5 @@
 // Menyediakan latihan tanpa kredit, termasuk poster SVG dan pekerjaan simulasi.
+import { fallbackCaption } from "./prompts";
 import {
   styles,
   type PosterRequest,
@@ -10,18 +11,7 @@ export const demoPattern =
   /^demo-([a-z0-9]+)-(1:1|3:4|9:16|16:9)-(minimalis|ceria|mewah|retro|natural)-([A-Za-z0-9_-]{1,216})$/;
 
 export function demoCaption(form: PosterRequest): CaptionResult {
-  return {
-    headline: form.product.split(/\s+/).slice(0, 6).join(" "),
-    caption: `Saatnya menikmati ${form.product}! ${form.description} ${form.promo} Pesan sekarang dan jadikan harimu lebih istimewa.`,
-    hashtags: [
-      "#UMKM",
-      "#ProdukLokal",
-      "#BelanjaLokal",
-      "#PromoHariIni",
-      "#PosterKu",
-    ],
-    imagePrompt: `Professional promotional poster for ${form.product}. Headline "${form.product}". ${form.description}. ${form.promo}. ${styles.find((s) => s.id === form.style)?.promptHint}.`,
-  };
+  return fallbackCaption(form);
 }
 
 export function createDemo(prompt: string, ratio: string, style = "minimalis") {

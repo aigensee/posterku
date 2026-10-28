@@ -58,6 +58,7 @@ export type CaptionResult = {
   caption: string;
   hashtags: string[];
   imagePrompt: string;
+  fallback?: boolean;
 };
 
 export type PosterJob = {

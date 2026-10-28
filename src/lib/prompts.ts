@@ -18,6 +18,44 @@ export function captionMessages(form: PosterRequest) {
   ];
 }
 
+export function fallbackCaption(form: PosterRequest): CaptionResult {
+  const headline = form.product.trim().split(/\s+/).slice(0, 6).join(" ");
+  const style = styles.find((s) => s.id === form.style)!;
+  const styleHashtags = {
+    minimalis: ["#Minimalis", "#Modern"],
+    ceria: ["#Ceria", "#PenuhWarna"],
+    mewah: ["#Mewah", "#Premium"],
+    retro: ["#Retro", "#Klasik"],
+    natural: ["#Natural", "#Organik"],
+  };
+  const compositions = {
+    "1:1": "square feed composition",
+    "3:4": "vertical portrait composition",
+    "9:16": "vertical story composition with space at top and bottom",
+    "16:9": "wide banner composition",
+  };
+  const description = form.description.trim().replace(/[.!?]+$/, "");
+  const promo = form.promo.trim().replace(/[.!?]+$/, "");
+  const details = description || `Pilihan istimewa untuk kebutuhanmu`;
+  const offer = promo ? `, dengan promo ${promo}` : "";
+  const productTag = form.product.replace(/[^\p{L}\p{N}_]/gu, "") || "ProdukPilihan";
+  const imagePrompt = [
+    `Professional promotional poster for ${form.product.trim()}.`,
+    `${compositions[form.ratio]}.`,
+    `${style.promptHint}.`,
+    `Headline "${headline.replace(/"/g, "'")}" as large bold typography.`,
+    promo ? `Promo text: "${promo.replace(/"/g, "'")}".` : "",
+    description ? `Product description: ${description}.` : "",
+  ].filter(Boolean).join(" ").slice(0, 900);
+
+  return {
+    headline,
+    caption: `Kenali ${form.product.trim()}, pilihan tepat untukmu! ${details}${offer}. Pesan sekarang!`,
+    hashtags: ["#UMKM", "#ProdukLokal", `#${productTag}`, ...styleHashtags[form.style]],
+    imagePrompt,
+  };
+}
+
 export function parseCaption(text: string): CaptionResult {
   const clean = text.replace(/```(?:json)?/g, "").trim();
   const data = JSON.parse(

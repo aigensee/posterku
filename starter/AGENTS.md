@@ -78,7 +78,8 @@ PosterKu membuat poster promosi untuk UMKM:
 1. Pengguna mengisi nama produk, deskripsi, promo, gaya, rasio, dan foto
    produk (opsional).
 2. AI teks menulis headline, caption, hashtag, dan prompt gambar
-   (`/api/caption`).
+   (`/api/caption`). Kalau AI teks gagal atau lebih dari 40 detik, server
+   memakai caption cadangan (`fallbackCaption`) supaya poster tetap dibuat.
 3. AI gambar membuat poster (`/api/generate`), lalu browser mengecek status
    job setiap 2 detik (`/api/jobs/[id]`).
 4. Poster tampil dan bisa diunduh lewat proxy `/api/file/[id]`. Riwayat
@@ -112,7 +113,7 @@ yang memanggil Yorai.** Detail tiap model ada di
   (body sama).
 - File: `POST /files` (upload), `GET /files/{id}` (unduh, butuh key; hasil
   hilang setelah 14 hari).
-- Model default: teks `claude-haiku-5-5`, gambar `z-image`
+- Model default: teks `deepseek-v4-1-flash`, gambar `z-image`
   (`text-to-image`), foto produk `nano-banana-2-lite` (`image-to-image`,
   `image_urls`). Kalau mengganti model, cek dulu nama input dan rasio yang
   didukung di halaman `.md` model tersebut.

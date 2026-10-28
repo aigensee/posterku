@@ -2,7 +2,7 @@
 import { config } from "@/lib/config";
 import { checkPasscode, apiError, invalid } from "@/lib/guard";
 import { styles, ratios, type PosterRequest } from "@/lib/styles";
-import { captionMessages, parseCaption } from "@/lib/prompts";
+import { captionMessages, fallbackCaption, parseCaption } from "@/lib/prompts";
 import { demoCaption } from "@/lib/demo";
 import { chat, YoraiError } from "@/lib/yorai";
 
@@ -47,16 +47,29 @@ export async function POST(request: Request) {
 
     if (config.demo) return Response.json(demoCaption(f as PosterRequest));
 
-    const result = await chat(captionMessages(f));
+    const form = f as PosterRequest;
 
     try {
-      return Response.json(parseCaption(result.choices[0].message.content));
-    } catch {
-      throw new YoraiError(
-        502,
-        "invalid_caption",
-        "AI mengembalikan caption yang tidak valid. Silakan coba lagi.",
-      );
+      const result = await chat(captionMessages(form), 40000);
+
+      try {
+        return Response.json(parseCaption(result.choices[0].message.content));
+      } catch {
+        throw new YoraiError(
+          502,
+          "invalid_caption",
+          "AI mengembalikan caption yang tidak valid. Silakan coba lagi.",
+        );
+      }
+    } catch (e) {
+      if (e instanceof YoraiError && (e.status === 401 || e.status === 402))
+        throw e;
+
+      const code = e instanceof YoraiError ? e.code : "invalid_response";
+
+      console.warn("caption fallback", code);
+
+      return Response.json({ ...fallbackCaption(form), fallback: true });
     }
   } catch (e) {
     return apiError(e);
