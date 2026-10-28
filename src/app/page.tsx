@@ -54,6 +54,7 @@ export default function Home() {
         <ErrorAlert message={app.error} />
         <div className="studio-grid">
           <PosterForm
+            app={app}
             busy={app.busy}
             disabled={!app.status?.configured || app.needsPasscode}
             status={app.status}
@@ -61,6 +62,7 @@ export default function Home() {
           />
           <div className="min-w-0" ref={resultAnchor}>
             <ResultPanel
+              app={app}
               key={app.result?.jobId || "empty"}
               demo={app.status?.demo ?? false}
               result={app.result}

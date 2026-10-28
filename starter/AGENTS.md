@@ -82,7 +82,11 @@ PosterKu membuat poster promosi untuk UMKM:
    memakai caption cadangan (`fallbackCaption`) supaya poster tetap dibuat.
 3. AI gambar membuat poster (`/api/generate`), lalu browser mengecek status
    job setiap 2 detik (`/api/jobs/[id]`).
-4. Poster tampil dan bisa diunduh lewat proxy `/api/file/[id]`. Riwayat
+4. Mode Video (atau tombol "Animasikan poster") membuat video promo lewat
+   `/api/video` (text-to-video, atau image-to-video dengan foto/poster sebagai
+   frame pertama). Perkiraan biaya dari `/api/video/quote` wajib tampil
+   sebelum pengguna menekan tombol.
+5. Poster/video tampil dan bisa diunduh lewat proxy `/api/file/[id]`. Riwayat
    disimpan di localStorage browser.
 
 Peta kode:
@@ -115,5 +119,6 @@ yang memanggil Yorai.** Detail tiap model ada di
   hilang setelah 14 hari).
 - Model default: teks `deepseek-v4-1-flash`, gambar `z-image`
   (`text-to-image`), foto produk `nano-banana-2-lite` (`image-to-image`,
-  `image_urls`). Kalau mengganti model, cek dulu nama input dan rasio yang
+  `image_urls`), video `bytedance-seedance-2-mini` (`text-to-video` /
+  `image-to-video` dengan `first_frame_url`). Kalau mengganti model, cek dulu nama input dan rasio yang
   didukung di halaman `.md` model tersebut.

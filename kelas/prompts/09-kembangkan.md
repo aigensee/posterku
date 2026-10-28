@@ -8,7 +8,7 @@ Pilih satu, pakai rumus prompt dari `ATURAN-PAKAI.md`, dan presentasikan hasilny
 | Banyak bahasa | "Tambahkan pilihan bahasa caption: Indonesia, Inggris, Jawa." |
 | 4 variasi sekaligus | "Saat klik Buat Poster, buat 4 poster sekaligus dan tampilkan dalam grid 2x2. Tampilkan total biaya sebelum mulai." |
 | Template acara | "Tambahkan gaya Ramadan, Kemerdekaan, Harbolnas, dan Imlek." |
-| Poster video | "Tambahkan opsi 'Jadikan video 5 detik' memakai model video Yorai termurah. Cek katalog di https://yorai.id/docs/api/models?kind=video dan tampilkan biaya sebelum membuat." |
+| Musik latar | "Tambahkan opsi musik latar untuk video memakai model musik Yorai. Cek katalog https://yorai.id/docs/api/models dan tampilkan biaya sebelum membuat." |
 | Ganti model | "Ganti model gambar ke <slug> dari https://yorai.id/docs/api/models. Sesuaikan input dan rasionya." |
 | Branding toko | "Tambahkan input nama toko dan warna brand, lalu masukkan ke prompt gambar." |
 

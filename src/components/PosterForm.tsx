@@ -3,6 +3,8 @@
 // Mengumpulkan informasi produk untuk poster.
 import { useState } from "react";
 import type { PosterRequest } from "@/lib/styles";
+import { VideoOptions } from "./VideoOptions";
+import type { usePosterku } from "./usePosterku";
 import type { Status } from "./usePosterku";
 import { prettyModel } from "@/lib/format";
 import { StylePicker } from "./StylePicker";
@@ -14,7 +16,9 @@ export function PosterForm({
   disabled,
   status,
   onCreate,
+  app,
 }: {
+  app: ReturnType<typeof usePosterku>;
   busy: boolean;
   disabled: boolean;
   status: Status | null;
@@ -33,6 +37,8 @@ export function PosterForm({
   function modelNote() {
     if (!status) return "Memuat konfigurasi…";
 
+    if (app.mode === "video") return `Teks: ${prettyModel(status.models.text)} · Video: ${prettyModel(status.models.video)}`;
+
     const imageModel = photo ? status.models.photo : status.models.image;
 
     return `Teks: ${prettyModel(status.models.text)} · Gambar: ${prettyModel(imageModel)}`;
@@ -44,7 +50,8 @@ export function PosterForm({
       onSubmit={(e) => {
         e.preventDefault();
 
-        onCreate(form, photo);
+        if (app.mode === "video") app.createVideo(form, photo);
+        else onCreate(form, photo);
       }}
     >
       <div className="section-heading">
@@ -55,6 +62,10 @@ export function PosterForm({
         </div>
       </div>
       <fieldset disabled={busy || disabled} className="form-fields">
+        <div className="mode-switch" role="group" aria-label="Jenis karya">
+          <button type="button" aria-pressed={app.mode === "poster"} onClick={() => app.setMode("poster")}>Poster</button>
+          <button type="button" aria-pressed={app.mode === "video"} onClick={() => app.setMode("video")}>Video</button>
+        </div>
         <div>
           <label htmlFor="product">
             Nama produk <span className="required">*</span>
@@ -103,6 +114,7 @@ export function PosterForm({
           onChange={(ratio) => setForm({ ...form, ratio })}
         />
         <PhotoDrop photo={photo} onChange={setPhoto} />
+        {app.mode === "video" && <VideoOptions value={app.videoOptions} onChange={app.setVideoOptions} ratio={form.ratio} demo={status?.demo ?? false} api={app.api} />}
         <button
           className="primary create-button"
           disabled={busy || disabled}
@@ -114,7 +126,7 @@ export function PosterForm({
             </>
           ) : (
             <>
-              ✦ &nbsp; Buat Poster <span>↗</span>
+              ✦ &nbsp; {app.mode === "video" ? "Buat Video" : "Buat Poster"} <span>↗</span>
             </>
           )}
         </button>

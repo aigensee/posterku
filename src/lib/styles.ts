@@ -58,6 +58,7 @@ export type CaptionResult = {
   caption: string;
   hashtags: string[];
   imagePrompt: string;
+  videoPrompt: string;
   fallback?: boolean;
 };
 
@@ -72,6 +73,8 @@ export type PosterJob = {
 };
 
 export type HistoryItem = CaptionResult & {
+  kind: "poster" | "video";
+  videoFileId?: string;
   jobId: string;
   fileId: string;
   product: string;
@@ -80,4 +83,16 @@ export type HistoryItem = CaptionResult & {
   credits: number;
   createdAt: string;
   expiresAt: string | null;
+};
+
+export type VideoSettings = {
+  duration: 5 | 10;
+  resolution: "480p" | "720p";
+  sound: boolean;
+};
+
+export const defaultVideoOptions: VideoSettings = {
+  duration: 5,
+  resolution: "480p",
+  sound: true,
 };

@@ -18,6 +18,7 @@ sepenuhnya dengan memberi instruksi ke agen AI (**Google Antigravity** atau
 | 4 | [prompts/04-ai-teks.md](prompts/04-ai-teks.md) | caption dari AI sungguhan |
 | 5 | [prompts/05-ai-gambar.md](prompts/05-ai-gambar.md) | poster dari AI sungguhan |
 | 6 | [prompts/06-foto-produk.md](prompts/06-foto-produk.md) | poster dari foto produk |
+| 6b | [prompts/06b-video.md](prompts/06b-video.md) | video promo (text-to-video & animasikan poster) |
 | 7 | [prompts/07-poles.md](prompts/07-poles.md) | riwayat, aksi, kode akses, audit |
 | 8 | [prompts/08-publish.md](prompts/08-publish.md) + [PUBLISH-VERCEL.md](PUBLISH-VERCEL.md) | online di `.vercel.app` |
 | 9 | [prompts/09-kembangkan.md](prompts/09-kembangkan.md) | fitur tantangan |

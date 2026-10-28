@@ -15,6 +15,7 @@ dipublikasikan gratis di Vercel.
 
 - Caption, headline, dan hashtag bahasa Indonesia dari AI teks (`deepseek-v4-1-flash`), dengan caption cadangan otomatis bila AI teks sedang gangguan
 - Poster dari AI gambar (`z-image`), atau dari foto produk asli (`nano-banana-2-lite`)
+- **Video promo** 5/10 detik (`bytedance-seedance-2-mini`): dari teks, dari foto produk, atau dengan menganimasikan poster, lengkap dengan perkiraan biaya
 - 5 gaya visual dan 4 rasio (Feed, Portrait, Story/Reels, Banner)
 - Progres langkah demi langkah, unduh, salin caption, buat variasi, edit prompt
 - Riwayat 12 poster terakhir (disimpan di browser)
@@ -48,6 +49,7 @@ Tidak bisa ngoding? Buka folder ini di Antigravity atau Codex dan ketik
 | `YORAI_TEXT_MODEL` | tidak | bawaan `deepseek-v4-1-flash` |
 | `YORAI_IMAGE_MODEL` | tidak | bawaan `z-image` |
 | `YORAI_PHOTO_MODEL` | tidak | bawaan `nano-banana-2-lite` |
+| `YORAI_VIDEO_MODEL` | tidak | bawaan `bytedance-seedance-2-mini` |
 
 \* Tidak wajib jika `DEMO_MODE=true`.
 
@@ -67,6 +69,7 @@ Paket Hobby Vercel hanya untuk penggunaan non-komersial.
 Browser ──► /api/caption ──► Yorai POST /chat/completions   (caption + prompt gambar)
         ──► /api/upload  ──► Yorai POST /files              (opsional: foto produk)
         ──► /api/generate──► Yorai POST /quote + POST /jobs (buat poster)
+        ──► /api/video   ──► Yorai POST /files + /quote + /jobs (video promo)
         ──► /api/jobs/:id──► Yorai GET /jobs/{id}           (dicek tiap 2 detik)
         ──► /api/file/:id──► Yorai GET /files/{id}          (tampilkan & unduh)
 ```

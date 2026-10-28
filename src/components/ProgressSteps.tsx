@@ -6,14 +6,16 @@ import type { Step } from "./usePosterku";
 export function ProgressSteps({
   step,
   hasPhoto,
+  video = false,
 }: {
   step: Step;
   hasPhoto: boolean;
+  video?: boolean;
 }) {
   const steps = [
-    { key: "caption", label: "Menulis caption" },
+    { key: "caption", label: video ? "Menulis naskah" : "Menulis caption" },
     ...(hasPhoto ? [{ key: "uploading", label: "Mengunggah foto" }] : []),
-    { key: "generating", label: "Membuat poster" },
+    { key: "generating", label: video ? "Membuat video" : "Membuat poster" },
     { key: "done", label: "Selesai" },
   ];
   const index = steps.findIndex(

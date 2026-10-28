@@ -1,8 +1,8 @@
 "use client";
 
 // Mengatur alur pembuatan poster, akses, saldo, dan riwayat lokal.
-import { useEffect, useRef, useState } from "react";
-import { ratios, styles } from "@/lib/styles";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { ratios, styles, defaultVideoOptions, type VideoSettings } from "@/lib/styles";
 import type {
   CaptionResult,
   HistoryItem,
@@ -14,7 +14,7 @@ export type Status = {
   configured: boolean;
   demo: boolean;
   passcodeRequired: boolean;
-  models: { text: string; image: string; photo: string };
+  models: { text: string; image: string; photo: string; video: string };
 };
 
 export type Step =
@@ -97,6 +97,10 @@ function responseMessage(status: number) {
 }
 
 export function usePosterku() {
+  const [mode, setMode] = useState<"poster" | "video">("poster");
+  const [videoOptions, setVideoOptions] = useState<VideoSettings>(defaultVideoOptions);
+  const [workingKind, setWorkingKind] = useState<"poster" | "video">("poster");
+  const videoSource = useRef<string | undefined>(undefined);
   const [status, setStatus] = useState<Status | null>(null);
   const [passcode, setPasscode] = useState("");
   const [needsPasscode, setNeedsPasscode] = useState(false);
@@ -114,11 +118,11 @@ export function usePosterku() {
   );
   const busy = ["caption", "uploading", "generating", "polling"].includes(step);
 
-  async function api<T>(
+  const api = useCallback(async <T,>(
     path: string,
     init: RequestInit = {},
     code = passcode,
-  ): Promise<T> {
+  ): Promise<T> => {
     const headers = new Headers(init.headers);
 
     headers.set("x-passcode", code);
@@ -158,7 +162,7 @@ export function usePosterku() {
     }
 
     return data;
-  }
+  }, [passcode]);
 
   useEffect(() => {
     alive.current = true;
@@ -193,7 +197,8 @@ export function usePosterku() {
                   Array.isArray(i.hashtags) &&
                   i.hashtags.every((h: unknown) => typeof h === "string"),
               )
-              .slice(0, 12),
+              .slice(0, 12)
+              .map((item) => ({ ...item, kind: item.kind === "video" ? "video" : "poster", videoPrompt: typeof item.videoPrompt === "string" ? item.videoPrompt : "Slow camera push-in, gentle product motion. " + item.imagePrompt.slice(0, 400) })),
           );
       } catch { }
 
@@ -235,37 +240,41 @@ export function usePosterku() {
     }
   }
 
-  async function render(form: PosterRequest, caption: CaptionResult) {
+  async function render(form: PosterRequest, caption: CaptionResult, kind: "poster" | "video" = "poster", posterFileId?: string) {
+    const isVideo = kind === "video";
+
+    setWorkingKind(kind);
     setStep("generating");
 
-    let { job } = await api<{ job: PosterJob }>("generate", {
+    let { job } = await api<{ job: PosterJob }>(isVideo ? "video" : "generate", {
       method: "POST",
       body: JSON.stringify({
-        prompt: caption.imagePrompt,
+        prompt: isVideo ? caption.videoPrompt : caption.imagePrompt,
+        ...(isVideo ? { ...videoOptions, posterFileId } : {}),
         ratio: form.ratio,
         style: form.style,
-        photoFileId: photoId.current,
+        photoFileId: posterFileId ? undefined : photoId.current,
       }),
     });
 
     setStep("polling");
 
-    const deadline = Date.now() + 180000;
+    const deadline = Date.now() + (isVideo ? 600000 : 180000);
 
     let consecutiveFailures = 0;
 
     while (job.status === "queued" || job.status === "running") {
       if (Date.now() >= deadline)
         throw new Error(
-          "Poster belum selesai setelah 3 menit. Silakan coba lagi nanti.",
+          isVideo ? "Video belum selesai setelah 10 menit. Silakan coba lagi nanti." : "Poster belum selesai setelah 3 menit. Silakan coba lagi nanti.",
         );
 
-      await new Promise((r) => setTimeout(r, 2000));
+      await new Promise((r) => setTimeout(r, isVideo ? 5000 : 2000));
 
       if (!alive.current) return;
 
       if (Date.now() >= deadline) {
-        throw new Error("Poster belum selesai setelah 3 menit. Silakan coba lagi nanti.");
+        throw new Error(isVideo ? "Video belum selesai setelah 10 menit. Silakan coba lagi nanti." : "Poster belum selesai setelah 3 menit. Silakan coba lagi nanti.");
       }
 
       try {
@@ -285,12 +294,14 @@ export function usePosterku() {
     }
 
     if (job.status === "failed" || !job.fileId)
-      throw new Error(job.error || "Poster gagal dibuat. Silakan coba lagi.");
+      throw new Error(job.error || `${isVideo ? "Video" : "Poster"} gagal dibuat. Silakan coba lagi.`);
 
     if (!alive.current) return;
 
     const item: HistoryItem = {
       ...caption,
+      kind,
+      ...(isVideo ? { videoFileId: job.fileId } : {}),
       jobId: job.id,
       fileId: job.fileId,
       product: form.product,
@@ -338,8 +349,10 @@ export function usePosterku() {
     }
   }
 
-  const create = (form: PosterRequest, photo?: File) =>
+  const createMedia = (form: PosterRequest, photo?: File, kind: "poster" | "video" = "poster") =>
     run(async () => {
+      setWorkingKind(kind);
+      videoSource.current = undefined;
       setHasPhoto(Boolean(photo));
       setResult(null);
 
@@ -365,7 +378,7 @@ export function usePosterku() {
         ).fileId;
       }
 
-      await render(form, caption);
+      await render(form, caption, kind);
     });
   const regenerate = (prompt: string) =>
     run(async () => {
@@ -384,6 +397,12 @@ export function usePosterku() {
     });
 
   return {
+    mode,
+    setMode,
+    videoOptions,
+    setVideoOptions,
+    workingKind,
+    api,
     status,
     step,
     error,
@@ -394,12 +413,28 @@ export function usePosterku() {
     hasPhoto,
     needsPasscode,
     unlock,
-    create,
+    create: (form: PosterRequest, photo?: File) => createMedia(form, photo),
+    createVideo: (form: PosterRequest, photo?: File) => createMedia(form, photo, "video"),
+    animatePoster: () => run(async () => {
+      if (!result || !current.current) return;
+
+      videoSource.current = result.fileId;
+      setHasPhoto(false);
+      await render(current.current.form, current.current.caption, "video", result.fileId);
+    }),
     regenerate,
-    variation: () => regenerate(current.current?.caption.imagePrompt || ""),
+    variation: () => {
+      if (result?.kind === "video") return run(async () => {
+        if (current.current) await render(current.current.form, current.current.caption, "video", videoSource.current);
+      });
+
+      return regenerate(current.current?.caption.imagePrompt || "");
+    },
     open: (item: HistoryItem) => {
       if (active.current) return;
       setResult(item);
+      setWorkingKind(item.kind);
+      videoSource.current = undefined;
 
       photoId.current = undefined;
       setHasPhoto(false);

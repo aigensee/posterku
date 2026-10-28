@@ -12,7 +12,7 @@ export function StylePicker({
 }) {
   return (
     <fieldset>
-      <legend>Gaya poster</legend>
+      <legend>Gaya visual</legend>
       <div className="style-grid">
         {styles.map((s) => (
           <label

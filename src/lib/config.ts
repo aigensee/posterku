@@ -6,6 +6,7 @@ export const config = {
     "",
   ),
   models: {
+    video: process.env.YORAI_VIDEO_MODEL || "bytedance-seedance-2-mini",
     text: process.env.YORAI_TEXT_MODEL || "deepseek-v4-1-flash",
     image: process.env.YORAI_IMAGE_MODEL || "z-image",
     photo: process.env.YORAI_PHOTO_MODEL || "nano-banana-2-lite",

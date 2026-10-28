@@ -8,27 +8,27 @@ import {
 } from "./styles";
 
 export const demoPattern =
-  /^demo-([a-z0-9]+)-(1:1|3:4|9:16|16:9)-(minimalis|ceria|mewah|retro|natural)-([A-Za-z0-9_-]{1,216})$/;
+  /^demo-(?:video-)?([a-z0-9]+)-(1:1|3:4|9:16|16:9)-(minimalis|ceria|mewah|retro|natural)-([A-Za-z0-9_-]{1,216})$/;
 
 export function demoCaption(form: PosterRequest): CaptionResult {
   return fallbackCaption(form);
 }
 
-export function createDemo(prompt: string, ratio: string, style = "minimalis") {
-  const title = prompt.match(/"([^"\n]+)"/)?.[1] || prompt.match(/poster for (.+?)(?:\.|$)/i)?.[1] || "Produk pilihanmu";
+export function createDemo(prompt: string, ratio: string, style = "minimalis", video = false) {
+  const title = prompt.match(/"([^"\n]+)"/)?.[1] || prompt.match(/poster for (.+?)(?:\.|$)/i)?.[1] || prompt.match(/Visual reference: (.+?)(?:\.|$)/i)?.[1] || "Produk pilihanmu";
   const truncated = title.slice(0, 40);
   const headline = title.length > 40 && /\S/.test(title[40])
     ? truncated.replace(/\s+\S*$/, "")
     : truncated.trimEnd();
   const encoded = Buffer.from(headline, "utf8").toString("base64url");
-  const id = `demo-${Date.now().toString(36)}-${ratio}-${style}-${encoded}`;
+  const id = `demo-${video ? "video-" : ""}${Date.now().toString(36)}-${ratio}-${style}-${encoded}`;
 
   return demoJob(id);
 }
 
 export function demoJob(id: string): PosterJob {
   const match = id.match(demoPattern)!;
-  const done = Date.now() - parseInt(match[1], 36) >= 3000;
+  const done = Date.now() - parseInt(match[1], 36) >= (id.startsWith("demo-video-") ? 5000 : 3000);
 
   return {
     id,

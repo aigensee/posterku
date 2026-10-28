@@ -18,7 +18,7 @@ export async function GET(
 
     if (!validId(id) && !demo) invalid("ID file tidak valid");
 
-    const upstream = demo ? null : await fetchFile(id);
+    const upstream = demo ? null : await fetchFile(id, request.headers.get("range"));
 
     const mime = demo
       ? "image/svg+xml"
@@ -30,8 +30,15 @@ export async function GET(
       "X-Content-Type-Options": "nosniff",
     });
 
+    for (const name of ["Content-Length", "Content-Range", "Accept-Ranges"]) {
+      const value = upstream?.headers.get(name);
+
+      if (value) headers.set(name, value);
+    }
+
     if (new URL(request.url).searchParams.get("download") === "1") {
       const ext: Record<string, string> = {
+        "video/mp4": "mp4",
         "image/png": "png",
         "image/jpeg": "jpg",
         "image/webp": "webp",
@@ -44,7 +51,7 @@ export async function GET(
       );
     }
 
-    return new Response(demo ? demoPosterSvg(id) : upstream!.body, { headers });
+    return new Response(demo ? demoPosterSvg(id) : upstream!.body, { headers, status: upstream?.status || 200 });
   } catch (e) {
     return apiError(e);
   }

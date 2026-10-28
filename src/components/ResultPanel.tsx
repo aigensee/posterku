@@ -1,6 +1,8 @@
 "use client";
 
 // Menampilkan hasil poster dan aksi berikutnya.
+import { VideoOptions } from "./VideoOptions";
+import type { usePosterku } from "./usePosterku";
 import { useState } from "react";
 import Image from "next/image";
 import type { HistoryItem } from "@/lib/styles";
@@ -11,6 +13,7 @@ import { ProgressSteps } from "./ProgressSteps";
 
 export function ResultPanel({
   result,
+  app,
   demo,
   busy,
   step,
@@ -18,6 +21,7 @@ export function ResultPanel({
   variation,
   regenerate,
 }: {
+  app: ReturnType<typeof usePosterku>;
   result: HistoryItem | null;
   demo: boolean;
   busy: boolean;
@@ -26,6 +30,9 @@ export function ResultPanel({
   variation: () => void;
   regenerate: (prompt: string) => void;
 }) {
+  const [animating, setAnimating] = useState(false);
+  const video = busy ? app.workingKind === "video" : result?.kind === "video";
+  const demoVideo = result?.fileId.startsWith("demo-video-") ?? false;
   const [copied, setCopied] = useState(false);
   const [copyError, setCopyError] = useState("");
   const [prompt, setPrompt] = useState<string | null>(null);
@@ -47,6 +54,31 @@ export function ResultPanel({
     }
   }
 
+  function resultMedia() {
+    if (!result) return null;
+
+    if (expired) return <p>Kedaluwarsa · Buat karya baru untuk mengunduh.</p>;
+
+    if (video && !demoVideo) return (
+      <video
+        src={`/api/file/${encodeURIComponent(result.videoFileId || result.fileId)}`}
+        controls playsInline loop muted autoPlay
+        onError={() => setExpired(true)}
+      />
+    );
+
+    return (
+      <Image
+        src={`/api/file/${encodeURIComponent(result.fileId)}`}
+        alt={`Promosi ${result.product}`}
+        width={900}
+        height={900}
+        unoptimized
+        onError={() => setExpired(true)}
+      />
+    );
+  }
+
   function posterContent() {
     if (busy) return (
       <div className="skeleton">
@@ -58,21 +90,11 @@ export function ResultPanel({
 
     if (result) return (
       <div
-        className="poster-frame"
+        className={`poster-frame ${demoVideo ? "demo-video" : ""}`}
         style={{ aspectRatio: result.ratio.replace(":", "/") }}
       >
-        {expired ? (
-          <p>Kedaluwarsa · Buat poster baru untuk mengunduh.</p>
-        ) : (
-          <Image
-            src={`/api/file/${encodeURIComponent(result.fileId)}`}
-            alt={`Poster promosi ${result.product}`}
-            width={900}
-            height={900}
-            unoptimized
-            onError={() => setExpired(true)}
-          />
-        )}
+        {demoVideo && <span className="demo-video-badge">MODE DEMO</span>}
+        {resultMedia()}
       </div>
     );
 
@@ -84,7 +106,11 @@ export function ResultPanel({
           <i />
           <b />
         </div>
-        <h3>Poster kamu akan muncul di sini</h3>
+        <h3>
+          {app.mode === "video"
+            ? "Video kamu akan muncul di sini"
+            : "Poster kamu akan muncul di sini"}
+        </h3>
         <p>
           Mulai dari cerita kecil tentang produkmu.
           <br />
@@ -106,20 +132,21 @@ export function ResultPanel({
         <span className="tiny-badge">✦ AI STUDIO</span>
       </div>
       {(busy || step === "done") && (
-        <ProgressSteps step={step} hasPhoto={hasPhoto} />
+        <ProgressSteps step={step} hasPhoto={hasPhoto} video={video} />
       )}
+      {busy && video && <p className="cost">Video biasanya selesai dalam 1–3 menit. Jangan tutup halaman ini.</p>}
       <div className={`poster-stage ${busy ? "loading" : ""}`} aria-busy={busy}>
         {posterContent()}
       </div>
       {result && !busy && (
         <>
           <div className="result-actions">
-            <a
+            {!demoVideo && <a
               className="primary"
               href={`/api/file/${encodeURIComponent(result.fileId)}?download=1`}
             >
-              ↓ Unduh
-            </a>
+              ↓ {video ? "Unduh MP4" : "Unduh"}
+            </a>}
             <button onClick={copy}>
               {copied ? "✓ Tersalin!" : "Salin caption"}
             </button>
@@ -130,7 +157,7 @@ export function ResultPanel({
                 variation();
               }}
             >
-              ↻ Buat variasi
+              ↻ {video ? "Buat ulang video" : "Buat variasi"}
             </button>
           </div>
           {copyError && (
@@ -142,7 +169,12 @@ export function ResultPanel({
             {demo ? "Gratis · mode demo" : `Biaya: ${credit(result.credits)} kredit (≈ ${rupiah(result.credits)})`}
           </p>
           <CaptionCard item={result} />
-          <details className="prompt-editor">
+          {!video && <button className="secondary" onClick={() => setAnimating(!animating)} aria-expanded={animating}>Animasikan poster</button>}
+          {!video && animating && <div>
+            <VideoOptions value={app.videoOptions} onChange={app.setVideoOptions} ratio={result.ratio} demo={demo} api={app.api} />
+            <button className="primary" onClick={app.animatePoster}>Buat Video</button>
+          </div>}
+          {!video && <details className="prompt-editor">
             <summary>
               Edit prompt <span>↗</span>
             </summary>
@@ -168,7 +200,7 @@ export function ResultPanel({
             >
               Buat ulang
             </button>
-          </details>
+          </details>}
         </>
       )}
     </section>

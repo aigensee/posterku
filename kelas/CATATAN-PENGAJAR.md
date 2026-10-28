@@ -23,6 +23,7 @@ dari root. Setelah mengubah materi, sinkronkan dengan `npm run sync-starter`.
 | | 4 AI teks | 45 menit |
 | Hari 2 | 5 AI gambar | 45 menit |
 | | 6 Foto produk | 45 menit |
+| | 6b Video promo | 60 menit |
 | | 7 Poles + audit | 60 menit |
 | | 8 Publish | 30 menit |
 | | 9 Tantangan + showcase | 60 menit |
@@ -37,8 +38,10 @@ Untuk kelas satu hari (±4 jam): sesi 1 → 3 → 4+5 (gabung) → 8, lalu sesi 
 | Caption | `deepseek-v4-1-flash` | < Rp10 |
 | Poster dari teks | `z-image` | ±Rp84 |
 | Poster dari foto | `nano-banana-2-lite` | ±Rp416 |
+| Video 5 detik 480p | `bytedance-seedance-2-mini` | ±Rp2.000 (720p ±Rp4.300) |
 
-Saldo Rp10.000 per peserta lebih dari cukup. Mode demo (`DEMO_MODE=true`)
+Saldo Rp10.000 per peserta cukup untuk poster; tambah ±Rp5.000 per peserta bila
+sesi 6b (video) dipraktikkan dengan AI sungguhan. Mode demo (`DEMO_MODE=true`)
 gratis, jadi pakai mode ini selama sesi 1–3.
 
 Harga dapat berubah. Cek di https://yorai.id/docs/api/models.
