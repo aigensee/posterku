@@ -6,7 +6,7 @@ Setiap kali kode di GitHub berubah, Vercel otomatis memperbarui situsmu.
 ## A. Kode ke GitHub
 
 **Cara termudah:** minta agen (`/publish` di Antigravity, atau prompt
-`kelas/prompts/08-publish.md` di Codex). Agen akan membuat repository dan
+`kelas/prompts/06-publish.md` di Codex). Agen akan membuat repository dan
 mengunggah kodenya.
 
 **Kalau agen tidak bisa login GitHub:**

@@ -1,4 +1,4 @@
-# Sesi 8: Publish ke internet (GitHub + Vercel, gratis)
+# Langkah 6: Publish ke internet (GitHub + Vercel, gratis)
 
 **Tujuan:** aplikasi bisa dibuka siapa saja lewat link `xxx.vercel.app`.
 **Waktu:** 30 menit. Panduan klik demi klik ada di `kelas/PUBLISH-VERCEL.md`.
@@ -31,9 +31,8 @@ Siapkan PosterKu untuk dipublikasikan:
 ## Cek hasil
 
 - [ ] Link `.vercel.app` bisa dibuka di HP
-- [ ] Tanpa kode akses, aplikasi tidak bisa membuat poster
-- [ ] Setiap kali minta AI mengubah sesuatu, lalu commit + push, Vercel
-      otomatis memperbarui situsnya
+- [ ] Tanpa kode akses, aplikasi tidak bisa membuat apa pun
+- [ ] Setiap perubahan yang di-commit dan di-push otomatis memperbarui situsnya
 
 > Paket gratis Vercel (Hobby) khusus penggunaan **non-komersial**. Kalau
 > aplikasi ini mau dijual atau dipakai untuk bisnis, pakai paket Pro atau

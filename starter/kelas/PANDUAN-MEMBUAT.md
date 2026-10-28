@@ -12,7 +12,7 @@ Contoh hasil akhirnya: https://posterku-one.vercel.app
 ```
   Kamu                     Agen AI                         Hasil
   ─────                    ───────                         ─────
-  tempel prompt sesi  ──►  baca AGENTS.md + prompt   ──►  kode baru
+  tempel prompt      ──►  baca AGENTS.md + prompt   ──►  kode baru
   cek di browser      ◄──  jalankan & tes sendiri    ◄──  laporan 4 bagian
   /simpan (commit)    ──►  titik simpan git          ──►  bisa dibatalkan kapan saja
 ```
@@ -68,11 +68,11 @@ Ikuti [00-PERSIAPAN.md](00-PERSIAPAN.md). Ringkasnya:
    menemukan `AGENTS.md`, pastikan folder yang dibuka adalah folder `posterku`
    (bukan folder di atasnya).
 
-## Langkah 2 — Pola kerja yang diulang di setiap sesi
+## Langkah 2 — Pola kerja yang diulang di setiap langkah
 
-Setiap sesi memakai pola yang sama:
+Setiap langkah memakai pola yang sama:
 
-1. **Buka file prompt sesi** di folder `kelas/prompts/`, lalu salin **seluruh**
+1. **Buka file prompt langkah itu** di folder `kelas/prompts/`, lalu salin **seluruh**
    isi blok prompt (kotak abu-abu).
 2. **Tempel ke chat agen**, lalu kirim.
 3. Agen menulis **rencana singkat**. Kalau rencananya menambah library,
@@ -90,48 +90,45 @@ Setiap sesi memakai pola yang sama:
 | Memeriksa kualitas | `/cek-kualitas` | "Jalankan lint, typecheck, dan build, lalu perbaiki sampai lulus." |
 | Menyimpan versi | `/simpan` | "Commit semua perubahan dengan pesan bahasa Indonesia yang jelas." |
 | Kembali ke versi terakhir | `/batalkan` | "Batalkan semua perubahan sejak commit terakhir. Tanya saya dulu." |
-| Publish | `/publish` | salin prompt sesi 8 |
+| Publish | `/publish` | salin prompt langkah 6 |
 
-> **Satu sesi, satu prompt.** Jangan menggabungkan beberapa sesi dalam satu
-> pesan. Agen bekerja paling baik dengan langkah kecil yang bisa dicek.
+> **Satu langkah, satu prompt.** Jangan menggabungkan beberapa langkah dalam
+> satu pesan. Agen bekerja paling baik dengan langkah yang bisa dicek.
 
-## Langkah 3 — Bangun aplikasinya, sesi demi sesi
+## Langkah 3 — Bangun aplikasinya (7 prompt)
 
 Semua prompt siap salin, berurutan dalam satu file:
-**[PROMPT-LENGKAP.md](PROMPT-LENGKAP.md)**. Atau buka per sesi lewat tabel di
+**[PROMPT-LENGKAP.md](PROMPT-LENGKAP.md)**. Atau buka per langkah lewat tabel di
 bawah.
 
-| Sesi | File prompt | Yang kamu lihat setelahnya | Biaya |
+| Langkah | File prompt | Yang kamu lihat setelahnya | Biaya |
 |---|---|---|---|
 | 1 | [01-proyek-awal](prompts/01-proyek-awal.md) | halaman awal Next.js di `localhost:3000` | gratis |
-| 2 | [02-tampilan](prompts/02-tampilan.md) | studio gelap: rail, grid kosong, composer, popover pengaturan | gratis |
-| 3 | [03-mode-demo](prompts/03-mode-demo.md) | klik **Buat** → kartu progres → gambar/video contoh | gratis |
-| 4 | [04-ai-teks](prompts/04-ai-teks.md) | **Prompt otomatis** menulis prompt + caption dengan AI sungguhan | < Rp10 |
-| 5 | [05-ai-gambar](prompts/05-ai-gambar.md) | gambar sungguhan dari Z-Image, saldo tampil di atas | ±Rp84/gambar |
-| 6 | [06-foto-produk](prompts/06-foto-produk.md) | foto produk di slot referensi → gambar promosi | ±Rp416/gambar |
-| 6b | [06b-video](prompts/06b-video.md) | tab Video + tombol **Animasikan** | ±Rp2.000/video 5 dtk |
-| 7 | [07-poles](prompts/07-poles.md) | riwayat, viewer, aksi kartu, kode akses, audit | gratis |
-| 8 | [08-publish](prompts/08-publish.md) | aplikasi online di `xxx.vercel.app` | gratis |
-| 9 | [09-kembangkan](prompts/09-kembangkan.md) | fitur pilihanmu sendiri | tergantung |
+| 2 | [02-tampilan](prompts/02-tampilan.md) | studio: rail, grid kosong, composer, popover pengaturan | gratis |
+| 3 | [03-alur-demo](prompts/03-alur-demo.md) | semua fitur jalan dengan hasil contoh: progres, Prompt otomatis, riwayat, viewer, Animasikan | gratis |
+| 4 | [04-sambungkan-yorai](prompts/04-sambungkan-yorai.md) | teks, gambar, video dari AI sungguhan + saldo | ±Rp100 untuk tes |
+| 5 | [05-kode-akses-audit](prompts/05-kode-akses-audit.md) | kode akses + audit kualitas | gratis |
+| 6 | [06-publish](prompts/06-publish.md) | aplikasi online di `xxx.vercel.app` | gratis |
+| 7 | [07-kembangkan](prompts/07-kembangkan.md) | fitur pilihanmu sendiri | tergantung |
 
-Catatan per sesi:
+Catatan:
 
-- **Sesi 1–3 memakai mode demo** (`DEMO_MODE=true`). Semua alur bisa dicoba
-  tanpa kredit, jadi bereksperimenlah sepuasnya di sini.
-- **Sebelum sesi 4** ada satu langkah manual: buka `.env.local`, isi
+- **Langkah 1–3 memakai mode demo** (`DEMO_MODE=true`). Semua fitur bisa
+  dicoba tanpa kredit, jadi bereksperimenlah sepuasnya di sini.
+- **Sebelum langkah 4** ada satu langkah manual: buka `.env.local`, isi
   `YORAI_API_KEY=` dengan key-mu, ubah `DEMO_MODE=false`, lalu simpan. Ini
   satu-satunya file yang kamu sentuh sendiri. Jangan pernah menempelkan key
   ke chat.
-- **Sesi 4–6b memakai kredit sungguhan.** Agen diminta menyebutkan perkiraan
-  biaya sebelum memanggil API. Lihat juga biaya di tombol **Buat** sebelum
-  mengeklik.
-- **Sesi 2 boleh kreatif.** Minta perubahan visual dengan bahasamu sendiri,
+- **Mulai langkah 4 memakai kredit sungguhan.** Agen diminta menyebutkan
+  perkiraan biaya sebelum memanggil API. Lihat juga biaya di tombol **Buat**
+  sebelum mengeklik.
+- **Langkah 2 boleh kreatif.** Minta perubahan visual dengan bahasamu sendiri,
   misalnya *"ganti warna aksen jadi hijau daun"*. Jangan lupa `/simpan`
   sebelum bereksperimen.
 
 ## Langkah 4 — Publish ke internet
 
-1. Jalankan sesi 8 (`/publish` di Antigravity). Agen akan mengecek kualitas,
+1. Jalankan prompt langkah 6 (`/publish` di Antigravity). Agen akan mengecek kualitas,
    membuat README, lalu push ke repository GitHub **private**.
 2. Di https://vercel.com/new, **Import** repository `posterku`.
 3. Di **Environment Variables**, isi sendiri (jangan lewat agen):
@@ -181,5 +178,5 @@ Panduan klik demi klik: [PUBLISH-VERCEL.md](PUBLISH-VERCEL.md).
 5. **Rumus prompt**: konteks → tujuan → detail → batasan → cara mengecek
    (lihat [ATURAN-PAKAI.md](ATURAN-PAKAI.md)).
 6. **Mau membuat generator lain?** Salin `AGENTS.md`, ganti bagian 5 (tentang
-   produk), lalu mulai lagi dari sesi 1
+   produk), lalu mulai lagi dari langkah 1
    ([CARA-PAKAI-AGENTS.md](CARA-PAKAI-AGENTS.md), langkah 7).

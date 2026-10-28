@@ -1,4 +1,4 @@
-# Sesi 1: Proyek awal
+# Langkah 1: Proyek awal
 
 **Tujuan:** proyek Next.js terpasang dan bisa dibuka di browser.
 **Waktu:** 20–30 menit.

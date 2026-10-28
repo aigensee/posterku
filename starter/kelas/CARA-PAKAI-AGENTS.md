@@ -86,13 +86,13 @@ commit setiap selesai.
 Kalau jawabannya melenceng, berarti AI tidak membaca file itu. Cek lagi
 Langkah 1: AGENTS.md harus ada di folder paling luar.
 
-## Langkah 4: Kerjakan sesi demi sesi
+## Langkah 4: Kerjakan prompt demi prompt
 
-Untuk **setiap** file di `kelas/prompts/` (01 → 09):
+Untuk **setiap** file di `kelas/prompts/` (01 → 07):
 
 1. **Buka percakapan baru.** Percakapan yang terlalu panjang membuat AI lupa
    aturan.
-2. **Salin prompt** dari file sesi itu, lalu tempel ke agen.
+2. **Salin prompt** dari file itu, lalu tempel ke agen.
 3. **Baca rencananya.** Sesuai dengan yang kamu mau? Kalau ya, ketik
    "Lanjut". Kalau belum, koreksi: "Jangan ubah X, fokus ke Y saja".
 4. **Izinkan perintah terminal** yang diminta agen, seperti `npm install`,
@@ -100,7 +100,7 @@ Untuk **setiap** file di `kelas/prompts/` (01 → 09):
    banyak file atau memakai `sudo`, lalu tanya alasannya.
 5. **Baca laporannya.** Formatnya selalu sama karena diatur AGENTS.md:
    Yang berubah, Cara mengecek, Hasil pemeriksaan, Langkah berikutnya.
-6. **Cek sendiri** sesuai bagian "Cara mengecek" dan checklist di file sesi.
+6. **Cek sendiri** sesuai bagian "Cara mengecek" dan checklist di file prompt.
 7. **Simpan:** `/simpan` (Antigravity) atau "Commit perubahan ini"
    (Codex).
 
@@ -159,7 +159,7 @@ aplikasi ini. Jangan ubah bagian 1–4 dan blok Next.js. Belum menulis kode.
 ```
 
 4. Baca hasilnya. Sudah menggambarkan aplikasi yang kamu bayangkan? Kalau
-   sudah, mulai dari prompt sesi 01 dengan nama aplikasimu.
+   sudah, mulai dari prompt 01 dengan nama aplikasimu.
 
 ---
 

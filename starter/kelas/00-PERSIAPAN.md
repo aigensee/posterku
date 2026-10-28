@@ -1,4 +1,4 @@
-# Sesi 0: Persiapan (kerjakan sebelum kelas)
+# Langkah 0: Persiapan (kerjakan sebelum kelas)
 
 Waktu: ±45 menit. Semua gratis, kecuali kredit Yorai (cukup Rp10.000).
 

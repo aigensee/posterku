@@ -7,7 +7,7 @@ sepenuhnya dengan memberi instruksi ke agen AI (**Google Antigravity** atau
 
 ## Urutan belajar
 
-| # | File | Hasil akhir sesi |
+| # | File | Hasil akhir |
 |---|---|---|
 | ★ | [PANDUAN-MEMBUAT.md](PANDUAN-MEMBUAT.md) | **mulai di sini**: langkah lengkap dari folder kosong sampai online |
 | ★ | [PROMPT-LENGKAP.md](PROMPT-LENGKAP.md) | semua prompt siap salin, berurutan + pintasan untuk Codex |
@@ -16,14 +16,11 @@ sepenuhnya dengan memberi instruksi ke agen AI (**Google Antigravity** atau
 | — | [CARA-PAKAI-AGENTS.md](CARA-PAKAI-AGENTS.md) | langkah demi langkah memakai `AGENTS.md` di Antigravity/Codex |
 | 1 | [prompts/01-proyek-awal.md](prompts/01-proyek-awal.md) | proyek berjalan di localhost |
 | 2 | [prompts/02-tampilan.md](prompts/02-tampilan.md) | tampilan studio (rail, grid, composer) |
-| 3 | [prompts/03-mode-demo.md](prompts/03-mode-demo.md) | alur lengkap tanpa biaya |
-| 4 | [prompts/04-ai-teks.md](prompts/04-ai-teks.md) | Prompt otomatis dari AI sungguhan |
-| 5 | [prompts/05-ai-gambar.md](prompts/05-ai-gambar.md) | gambar dari AI sungguhan |
-| 6 | [prompts/06-foto-produk.md](prompts/06-foto-produk.md) | gambar dari foto produk |
-| 6b | [prompts/06b-video.md](prompts/06b-video.md) | video promo (text-to-video & Animasikan) |
-| 7 | [prompts/07-poles.md](prompts/07-poles.md) | riwayat, viewer, aksi kartu, kode akses, audit |
-| 8 | [prompts/08-publish.md](prompts/08-publish.md) + [PUBLISH-VERCEL.md](PUBLISH-VERCEL.md) | online di `.vercel.app` |
-| 9 | [prompts/09-kembangkan.md](prompts/09-kembangkan.md) | fitur tantangan |
+| 3 | [prompts/03-alur-demo.md](prompts/03-alur-demo.md) | semua fitur jalan di mode demo (gratis) |
+| 4 | [prompts/04-sambungkan-yorai.md](prompts/04-sambungkan-yorai.md) | teks, gambar, video dari AI sungguhan |
+| 5 | [prompts/05-kode-akses-audit.md](prompts/05-kode-akses-audit.md) | kode akses + audit |
+| 6 | [prompts/06-publish.md](prompts/06-publish.md) + [PUBLISH-VERCEL.md](PUBLISH-VERCEL.md) | online di `.vercel.app` |
+| 7 | [prompts/07-kembangkan.md](prompts/07-kembangkan.md) | fitur tantangan |
 | — | [PROMPT-DARURAT.md](PROMPT-DARURAT.md) | saat error, tampilan rusak, atau AI berputar-putar |
 
 ## Cara kerja kit ini
@@ -54,6 +51,6 @@ sepenuhnya dengan memberi instruksi ke agen AI (**Google Antigravity** atau
 | Bisa membuka & mengetes UI sendiri | ya (browser agent) | terbatas | tidak |
 | Aturan proyek | `AGENTS.md` + `.agents/rules` | `AGENTS.md` | `AGENTS.md` |
 | Pintasan `/…` | ya | tidak (pakai kalimat) | tidak |
-| Cocok untuk | sesi 1–7 | sesi 1–7 | sesi 8–9 (PR → preview Vercel) |
+| Cocok untuk | langkah 1–5 | langkah 1–5 | langkah 6–7 (PR → preview Vercel) |
 
 Semua prompt di folder `prompts/` ditulis agar bisa dipakai di keduanya.

@@ -1,4 +1,4 @@
-# Sesi 2: Tampilan studio (belum pakai AI)
+# Langkah 2: Tampilan studio (belum pakai AI)
 
 **Tujuan:** halaman PosterKu Studio yang terlihat seperti aplikasi kreatif
 sungguhan (mirip workspace Yorai). Tombolnya belum melakukan apa-apa.

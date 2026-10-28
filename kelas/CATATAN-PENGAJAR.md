@@ -13,23 +13,20 @@ dari root. Setelah mengubah materi, sinkronkan dengan `npm run sync-starter`.
 
 ## Jadwal yang disarankan
 
-| Hari | Sesi | Durasi |
+| Waktu | Langkah | Durasi |
 |---|---|---|
 | Sebelum kelas | 0 Persiapan (PR) | 45 menit |
 | Hari 1 | Pembukaan + demo aplikasi jadi | 20 menit |
 | | 1 Proyek awal | 30 menit |
-| | 2 Tampilan | 45 menit |
-| | 3 Alur mode demo | 60 menit |
-| | 4 AI teks | 45 menit |
-| Hari 2 | 5 AI gambar | 45 menit |
-| | 6 Foto produk | 45 menit |
-| | 6b Video promo | 60 menit |
-| | 7 Poles + audit | 60 menit |
-| | 8 Publish | 30 menit |
-| | 9 Tantangan + showcase | 60 menit |
+| | 2 Tampilan studio | 45–60 menit |
+| | 3 Semua fitur di mode demo | 60–90 menit |
+| Hari 2 | 4 Sambungkan ke Yorai | 45–60 menit |
+| | 5 Kode akses + audit | 30–45 menit |
+| | 6 Publish | 30 menit |
+| | 7 Tantangan + showcase | 60 menit |
 
-Untuk kelas satu hari (±4 jam): sesi 1 → 3 → 4+5 (gabung) → 8, lalu sesi 2,
-6, dan 7 dijadikan PR.
+Untuk kelas satu hari (±4 jam): langkah 1 → 2 → 3 → 4 → 6; langkah 5 dan 7
+dijadikan PR.
 
 ## Biaya latihan per peserta
 
@@ -42,15 +39,15 @@ Untuk kelas satu hari (±4 jam): sesi 1 → 3 → 4+5 (gabung) → 8, lalu sesi 
 | Video 6 detik 480p | `grok-imagine` | ±Rp1.500 |
 
 Saldo Rp10.000 per peserta cukup untuk latihan gambar; tambah ±Rp5.000 per peserta bila
-sesi 6b (video) dipraktikkan dengan AI sungguhan. Mode demo (`DEMO_MODE=true`)
-gratis, jadi pakai mode ini selama sesi 1–3.
+video dipraktikkan dengan AI sungguhan. Mode demo (`DEMO_MODE=true`)
+gratis, jadi pakai mode ini selama langkah 1–3.
 
 Harga dapat berubah. Cek di https://yorai.id/docs/api/models.
 
 ## Hal yang sering terjadi di kelas
 
 - **Peserta menempelkan API key di chat AI.** Minta mereka mencabut key di
-  yorai.id/app/api lalu membuat yang baru. Tekankan ini sejak sesi 0.
+  yorai.id/app/api lalu membuat yang baru. Tekankan ini sejak persiapan.
 - **Satu key dipakai bersama.** Batas API per key: 20 job/menit, 10 job aktif
   per akun. Tiap peserta wajib memakai akun dan key sendiri.
 - **Agen "sok tahu" soal Next.js.** Next.js 16 berbeda dari data latih AI.

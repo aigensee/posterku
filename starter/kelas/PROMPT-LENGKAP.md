@@ -1,8 +1,8 @@
 # Kumpulan prompt PosterKu Studio (siap salin)
 
-Semua prompt untuk membangun PosterKu Studio, berurutan dari folder kosong sampai
-online. Dipakai bersama [PANDUAN-MEMBUAT.md](PANDUAN-MEMBUAT.md). Prompt yang sama
-juga ada per sesi di folder [`prompts/`](prompts/).
+Tujuh langkah langsung dari folder kosong sampai aplikasi online. Dipakai bersama
+[PANDUAN-MEMBUAT.md](PANDUAN-MEMBUAT.md). Prompt yang sama juga ada per langkah di
+folder [`prompts/`](prompts/).
 
 **Cara pakai:** salin isi satu kotak, tempel ke chat Antigravity atau Codex, kirim,
 tunggu laporannya, cek hasilnya, lalu simpan. **Satu kotak = satu pesan.**
@@ -24,7 +24,7 @@ demo untuk tes", dan "laporan dalam 4 bagian".
 
 ---
 
-## Sesi 1: Proyek awal 🆓
+## Langkah 1: Proyek awal 🆓
 
 ```
 Kita akan membangun aplikasi PosterKu. Baca AGENTS.md dan .agents/rules dulu.
@@ -53,7 +53,7 @@ Cek setelahnya:
 
 ---
 
-## Sesi 2: Tampilan studio (belum pakai AI) 🆓
+## Langkah 2: Tampilan studio (belum pakai AI) 🆓
 
 ```
 Lanjutkan PosterKu (AGENTS.md). Langkah ini: buat TAMPILAN STUDIO saja, belum
@@ -101,250 +101,144 @@ Cek setelahnya:
 
 ---
 
-## Sesi 3: Alur lengkap dengan mode demo (tanpa biaya) 🆓
+## Langkah 3: Semua fitur berjalan di mode demo (gratis) 🆓
 
 ```
-Lanjutkan PosterKu (AGENTS.md). Langkah ini: buat ALUR LENGKAP dengan MODE
-DEMO. Belum memanggil Yorai sungguhan.
+Lanjutkan PosterKu (AGENTS.md). Langkah ini: buat SEMUA FITUR studio berjalan
+di MODE DEMO (DEMO_MODE=true). Belum memanggil Yorai sungguhan.
 
 Server (src/lib dan src/app/api):
-- config.ts membaca env (YORAI_API_KEY, APP_PASSCODE, DEMO_MODE, YORAI_BASE_URL,
-  YORAI_TEXT_MODEL dengan default sesuai AGENTS.md).
-- guard.ts: jika APP_PASSCODE diisi, semua route wajib header x-passcode yang
-  cocok (perbandingan aman waktu-konstan). Kalau salah: 401 "Kode akses salah".
-- jobs.ts: menyusun body job Yorai {model, type, input} dari pilihan composer
-  memakai src/lib/models.ts.
-- demo.ts: job palsu yang "selesai" beberapa detik setelah dibuat; hasilnya
-  gambar contoh SVG (rasio sesuai, label kecil "MODE DEMO"); untuk video,
-  SVG yang bergerak pelan.
-- Route: GET /api/status ({configured, demo, passcodeRequired, textModel}),
-  POST /api/quote (biaya → mode demo: 0), POST /api/generate, GET
-  /api/jobs/[id], GET /api/file/[id] (?download=1 untuk unduh). Body quote dan
-  generate sama: {model, prompt, ratio, duration?, resolution?, sound?}.
-  Validasi semua input di server memakai models.ts, pesan bahasa Indonesia.
+- config.ts (env sesuai AGENTS.md), guard.ts (header x-passcode, perbandingan
+  waktu-konstan, 401 "Kode akses salah"), jobs.ts (validasi pilihan composer
+  dengan models.ts lalu menyusun body Yorai {model, type, input}), demo.ts
+  (job palsu selesai beberapa detik; hasil SVG contoh berisi nama produk,
+  rasio benar, label "MODE DEMO"; untuk video SVG yang bergerak pelan).
+- Route: GET /api/status, POST /api/quote, POST /api/generate, GET
+  /api/jobs/[id], GET /api/file/[id] (?download=1), POST /api/upload,
+  POST /api/caption, GET /api/balance. Semua input divalidasi, pesan error
+  bahasa Indonesia.
 
-Browser:
-- Hook useStudio: state composer (disimpan di localStorage), membuat job,
-  menambah kartu "sedang dibuat" di grid, cek status (gambar tiap 2 detik,
-  video tiap 5 detik), lalu kartu jadi hasil. Maksimal 3 job bersamaan.
-- Kartu "sedang dibuat": rasio benar, efek shimmer, dan di BAGIAN ATAS kartu
-  (agar tidak tertutup composer) spinner, nama model, status, bar progres
-  dengan persen perkiraan (dari lama proses biasa tiap model, berhenti di 95%
-  sampai selesai), dan waktu berjalan.
-- Setelah Buat diklik, kosongkan prompt dan foto referensi di composer
-  (pengaturan model/rasio tetap). Kalau pengiriman gagal, kembalikan isinya.
-- Tombol Buat menampilkan biaya dari /api/quote ("Gratis" di mode demo).
-- Error tampil sebagai toast, kartu gagal punya tombol "Coba lagi".
-- Chip "Mode demo" di top bar. Jika server belum dikonfigurasi (tidak ada key
-  dan bukan demo), tampilkan panduan ramah cara mengisi .env.local.
+Browser (hook src/components/useStudio.ts + komponen kecil, satu file satu
+komponen):
+1. Klik Buat → kartu "sedang dibuat" langsung muncul di grid: rasio benar,
+   shimmer, dan di BAGIAN ATAS kartu (agar tidak tertutup composer) spinner,
+   nama model, status, bar progres dengan persen perkiraan (dari lama proses
+   biasa tiap model, berhenti di 95% sampai selesai), dan waktu berjalan.
+   Cek status: gambar tiap 2 detik, video tiap 5 detik. Maksimal 3 job
+   bersamaan. Gagal → kartu error dengan "Coba lagi" dan toast.
+2. Setelah Buat, kosongkan prompt dan referensi di composer (pengaturan model
+   tetap). Kalau pengiriman gagal, kembalikan isinya.
+3. Tombol Buat menampilkan biaya dari /api/quote (mode demo: "Gratis").
+4. Prompt otomatis: modal Nama produk*, Deskripsi, Promo, Gaya (5 pilihan) →
+   /api/caption → mengisi prompt (gambar atau video sesuai tab) dan
+   melampirkan headline/caption/hashtag ke hasil berikutnya (chip
+   "Caption UMKM terlampir ✕").
+5. Slot referensi (foto/frame awal) dengan seret & lepas; foto diperkecil di
+   browser ke 1600px JPEG 0.88 sebelum /api/upload.
+6. Riwayat 40 hasil terakhir di localStorage. Kartu: Unduh, Pakai prompt,
+   Animasikan (khusus gambar: jadi frame awal video, composer pindah ke Video
+   dengan rasio gambar itu), Hapus (konfirmasi di halaman). Klik kartu →
+   viewer: media besar, prompt, model, pengaturan, biaya, tanggal, caption +
+   Salin caption. Tab Semua/Gambar/Video menghitung jumlahnya.
+7. Saldo/"Mode demo" di top bar, panel Aktivitas, panduan ramah bila server
+   belum dikonfigurasi.
 
-Tes sendiri di browser dengan DEMO_MODE=true (gambar dan video) sampai mulus.
-Commit "Alur studio mode demo".
+Tes sendiri di browser (desktop dan 390px), gambar dan video, sampai mulus.
+Commit "Studio berjalan di mode demo".
 ```
 
 Cek setelahnya:
 
-- [ ] Klik Buat: kartu progres (persen + waktu) muncul, prompt kosong lagi,
-      lalu kartu berubah jadi gambar contoh
-- [ ] Buat 3 sekaligus: semuanya berjalan bersamaan
-- [ ] Prompt kosong: muncul pesan yang jelas, tidak error
-- [ ] Chip "Mode demo" terlihat dan biaya tertulis "Gratis"
+- [ ] Klik Buat: kartu progres (persen + waktu) muncul dan prompt kosong lagi
+- [ ] Gambar dan video contoh muncul; tab Gambar/Video memfilter dengan benar
+- [ ] Prompt otomatis mengisi prompt dan caption ikut tampil di viewer
+- [ ] Animasikan memindahkan gambar ke slot frame awal video
+- [ ] Refresh halaman: riwayat masih ada
 
 ---
 
-## Sesi 4: Menyambungkan AI teks (Prompt otomatis) 💰 ✋
+## Langkah 4: Sambungkan ke AI sungguhan (Yorai) 💰 ✋
 
-**Biaya:** sangat kecil (DeepSeek V4.1 Flash, kurang dari Rp10 per caption).
+**Biaya:** Prompt otomatis < Rp10; Z-Image ±Rp84/gambar; Nano Banana 2 Lite ±Rp416/gambar; video 5 detik 480p ±Rp1.500–2.000.
 
-✋ **Sebelum menempel prompt:** buka `.env.local`, isi `YORAI_API_KEY=` dengan key
-Yorai-mu, ubah `DEMO_MODE=false`, lalu simpan. Jangan tempel key ke chat.
+✋ **Sebelum menempel prompt:**
+
+1. Buka file `.env.local` di editor.
+2. Isi `YORAI_API_KEY=` dengan key dari yorai.id/app/api (tempel di sini, bukan
+   di chat), lalu ubah `DEMO_MODE=false`. Simpan file.
 
 ```
-Lanjutkan PosterKu (AGENTS.md). Langkah ini: sambungkan /api/caption ke AI teks
-Yorai sungguhan. Saya sudah mengisi YORAI_API_KEY di .env.local; jangan
-tampilkan isinya.
+Lanjutkan PosterKu (AGENTS.md). Langkah ini: sambungkan studio ke Yorai
+SUNGGUHAN. Saya sudah mengisi YORAI_API_KEY di .env.local; jangan tampilkan
+isinya. Mode demo harus tetap berfungsi saat DEMO_MODE=true.
 
-Baca dulu https://yorai.id/llms.txt dan https://yorai.id/docs/api/llms-full.txt.
-- Buat src/lib/yorai.ts: fungsi pemanggil Yorai yang menambahkan Authorization,
-  dan mengubah error menjadi pesan ramah berbahasa Indonesia (401 key salah, 402
-  saldo kurang + link yorai.id/app/credits, 429 terlalu cepat, 503 API tidak
-  aktif, 504 waktu habis, gagal koneksi).
-- Buat src/lib/prompts.ts: instruksi agar AI membalas JSON
-  {headline, caption, hashtags, image_prompt, video_prompt}. Headline maksimal 6 kata
-  bahasa Indonesia. Caption bahasa Indonesia, 2–4 kalimat pendek + ajakan,
-  memakai teks promo. 5–8 hashtag. image_prompt dalam bahasa Inggris, maksimal
-  900 karakter, mendeskripsikan poster promosi profesional sesuai gaya dan
-  rasio, memuat headline dalam tanda kutip sebagai tipografi besar.
-  video_prompt bahasa Inggris, maksimal 600 karakter: gerakan kamera & produk. Buat
-  parser JSON yang tahan banting (abaikan
+Baca dulu https://yorai.id/llms.txt, https://yorai.id/docs/api/llms-full.txt,
+dan halaman .md tiap model di src/lib/models.ts
+(https://yorai.id/docs/api/models/<slug>.md). Cocokkan tipe, nama input
+gambar, rasio, durasi, dan resolusi di models.ts dengan dokumentasi itu.
+
+1. src/lib/yorai.ts: semua panggilan Yorai (Authorization Bearer) dengan pesan
+   error ramah: 401 key salah, 402 saldo kurang + link yorai.id/app/credits,
+   429 terlalu cepat, 503/504, gagal koneksi.
+2. /api/caption: POST /chat/completions (model YORAI_TEXT_MODEL), balasan JSON
+   {headline, caption, hashtags, image_prompt, video_prompt} dengan parser yang
+   tahan banting. Kalau AI teks gagal atau lebih dari 40 detik (kecuali 401/402),
+   pakai caption + prompt cadangan dari template.
+3. /api/quote → POST /quote. /api/generate → POST /quote lalu POST /jobs
+   (header Idempotency-Key acak). Foto referensi lewat POST /files. Untuk
+   Animasikan, server mengunduh hasil gambar lalu meng-upload ulang ke
+   POST /files dan memakai ID barunya.
+4. /api/jobs/[id] → GET /jobs/{id}, disederhanakan menjadi
+   {id, status, credits, fileId, mime, expiresAt, error}.
+5. /api/file/[id] → GET /files/{id}: validasi UUID, teruskan header Range
+   (supaya video bisa diputar dan digeser), 410 = "File sudah kedaluwarsa".
+6. /api/balance → GET /balance; chip saldo di top bar, segarkan setelah job
+   selesai.
+
+Uji SEKALI dengan AI sungguhan: Prompt otomatis "Keripik Tempe Bu Sri" lalu
+satu gambar Z-Image 1:1. Sebutkan biayanya sebelum mulai. Video sungguhan
+hanya kalau saya minta. Commit "Tersambung ke Yorai".
 ```
 
 Cek setelahnya:
 
-- [ ] Caption terasa ditulis manusia dan relevan dengan produk
-- [ ] Key yang sengaja disalahkan (coba ubah satu huruf) memunculkan pesan
-      "API key salah", bukan error teknis. Kembalikan key-nya setelah itu.
+- [ ] Biaya di tombol Buat muncul sebelum diklik (±0,084 untuk Z-Image)
+- [ ] Gambar sungguhan muncul dalam ±10–30 detik dan saldo berkurang
+- [ ] Key yang sengaja disalahkan (ubah satu huruf) memunculkan pesan "API key
+      salah", bukan error teknis. Kembalikan key-nya setelah itu.
 
 ---
 
-## Sesi 5: Menyambungkan AI gambar 💰
-
-**Biaya:** z-image ±0,084 kredit ≈ Rp84 per gambar.
+## Langkah 5: Kode akses + audit sebelum rilis 🆓
 
 ```
-Lanjutkan PosterKu (AGENTS.md). Langkah ini: sambungkan pembuatan gambar ke
-Yorai sungguhan (mode demo tetap berfungsi).
+Lanjutkan PosterKu (AGENTS.md). Langkah ini: kode akses lalu audit akhir.
 
-Baca dulu https://yorai.id/docs/api/models/z-image.md dan pastikan entri
-z-image di src/lib/models.ts (tipe, rasio, panjang prompt) sesuai.
-- /api/quote: teruskan body dari jobs.ts ke POST /quote, kembalikan {credits}.
-- /api/generate: cek harga dulu dengan POST /quote, lalu POST /jobs dengan
-  header Idempotency-Key acak. Kembalikan job + biaya hasil quote.
-- /api/jobs/[id]: ambil GET /jobs/{id} dan sederhanakan menjadi
-  {id, status, credits, fileId, mime, expiresAt, error}.
-- /api/file/[id]: teruskan file dari GET /files/{id} (butuh key) ke browser
-  dengan nama unduhan posterku-xxxx.jpg/png. Validasi id ketat (UUID). Kalau
-  kedaluwarsa (410), tampilkan "File sudah kedaluwarsa".
-- /api/balance: saldo dari GET /balance; tampilkan di top bar sebagai chip
-  "◈ 9,52" (format Indonesia) dengan perkiraan Rupiah di tooltip. Segarkan
-  setelah setiap job selesai.
-
-Uji SEKALI dengan AI sungguhan. Commit "Gambar dari AI".
+1. Kode akses: jika server mewajibkan APP_PASSCODE, tampilkan dialog yang rapi
+   untuk memasukkan kode. Simpan di localStorage, kirim sebagai header
+   x-passcode di setiap request, dan buka dialog lagi jika server membalas
+   "Kode akses salah". Uji dengan APP_PASSCODE=kelas123 di .env.local.
+2. Audit seperti reviewer profesional:
+   - Keamanan: key hanya di server, semua route (kecuali status dan file)
+     dicek passcode, input divalidasi dengan models.ts, tidak ada key di file
+     yang di-commit.
+   - Tampilan: 390px, 768px, 1280px, tema gelap dan terang; keadaan kosong,
+     loading, error, sukses; tidak ada scroll ke samping.
+   - Aksesibilitas: label, fokus keyboard, Esc menutup popover/modal, kontras,
+     teks alternatif, prefers-reduced-motion.
+   - Lint, typecheck, build.
+   Buat daftar temuan, perbaiki semuanya, lalu laporkan sebelum dan sesudah.
+Commit "Kode akses dan audit".
 ```
 
 Cek setelahnya:
 
-- [ ] Biaya di tombol Buat muncul sebelum diklik (±0,084)
-- [ ] Gambar sungguhan muncul di grid dalam ±10–30 detik
-- [ ] Saldo di top bar berkurang sesuai biaya
-
----
-
-## Sesi 6: Foto produk asli → gambar promosi (image-to-image) 💰
-
-**Biaya:** nano-banana-2-lite ±0,416 kredit ≈ Rp416 per gambar.
-
-```
-Lanjutkan PosterKu (AGENTS.md). Langkah ini: fitur foto referensi.
-
-Baca dulu https://yorai.id/docs/api/models/nano-banana-2-lite.md (nama input
-gambar dan tipenya), lalu lengkapi entrinya di src/lib/models.ts.
-- Slot referensi di composer hanya muncul untuk model yang menerima gambar.
-  Seret & lepas atau klik, ada pratinjau dan tombol hapus.
-- Di browser, sebelum diunggah, perkecil foto ke maksimal 1600px sisi terpanjang
-  dan ubah ke JPEG kualitas 0.88 (batas upload Vercel 4,5 MB). Tolak file yang
-  bukan gambar.
-- POST /api/upload: terima file (jpeg/png/webp, maksimal 4 MB), teruskan ke
-  POST /files Yorai, kembalikan {fileId}. Mode demo: id palsu.
-- /api/quote dan /api/generate menerima uploadFileId; jobs.ts memakai tipe
-  image-to-image dan field gambar dari models.ts.
-- Kalau model yang dipilih tidak menerima gambar (z-image), beri tahu pengguna
-  dan tawarkan pindah ke model yang bisa.
-
-Uji SEKALI dengan foto sungguhan. Commit "Gambar dari foto produk".
-```
-
-Cek setelahnya:
-
-- [ ] Produk di hasil mirip foto aslinya
-- [ ] Foto besar dari HP (±5–10 MB) tetap bisa diproses
-- [ ] Biaya di tombol Buat berubah saat foto ditambahkan
-
----
-
-## Sesi 6b: Video promo (text-to-video & Animasikan) 💰
-
-**Biaya:** Seedance 2 Mini ±0,4 kredit/detik (480p), jadi video 5 detik ≈ Rp2.000; 720p sekitar dua kali lipat. Grok Imagine ±0,25 kredit/detik (480p). Selalu cek biaya di tombol Buat.
-
-```
-Lanjutkan PosterKu (AGENTS.md). Langkah ini: tab VIDEO di composer.
-
-Baca dulu https://yorai.id/docs/api/models/bytedance-seedance-2-mini.md dan
-https://yorai.id/docs/api/models/grok-imagine.md untuk nama input, rasio,
-durasi, dan resolusinya, lalu lengkapi entrinya di src/lib/models.ts.
-
-1. Tab Video di popover pengaturan: pilihan model, rasio, Durasi, Kualitas
-   (480p/720p), dan toggle "Suara AI" (hanya untuk model yang mendukung).
-   Biaya di tombol Buat diperbarui saat pilihan berubah.
-2. Slot referensi berubah jadi "+ Frame awal" untuk model video.
-3. Di kartu gambar, tombol "Animasikan": gambar itu jadi frame awal dan composer
-   pindah ke Video. Server mengunduh gambar itu lalu meng-upload ulang ke
-   POST /files dan memakai ID barunya (sourceFileId).
-4. Video dicek tiap 5 detik (maksimal 10 menit). Kartu video punya tanda ▶,
-   diputar tanpa suara saat kursor di atasnya; viewer menampilkan pemutar
-   dan tombol Unduh MP4.
-5. /api/file harus meneruskan header Range agar video bisa diputar dan digeser.
-6. Prompt otomatis juga menulis prompt video (gerakan kamera & produk).
-
-Uji di mode demo dulu. Lalu uji SEKALI video sungguhan 5 detik 480p dan
-sebutkan biayanya sebelum mulai. Commit "Fitur video promo".
-```
-
-Cek setelahnya:
-
-- [ ] Biaya berubah saat durasi/kualitas diganti
-- [ ] Video bisa diputar di HP dan bisa diunduh
-- [ ] "Animasikan" menghasilkan video yang diawali gambar tersebut
-- [ ] Tab Video di grid hanya menampilkan video
-
----
-
-## Sesi 7: Poles sampai siap dipakai orang lain 🆓
-
-**Prompt A: riwayat dan viewer**
-
-```
-Simpan 40 hasil terakhir di localStorage (id job, id file, jenis, model, prompt,
-rasio, durasi, biaya, tanggal, tanggal kedaluwarsa, caption bila ada) supaya
-grid tetap ada setelah refresh. Klik kartu membuka viewer: media besar dan
-panel detail (prompt, model, rasio/durasi, biaya, tanggal, "Tersimpan di Yorai
-sampai …", caption UMKM + tombol Salin caption). Jika file gagal dimuat,
-tampilkan label "Kedaluwarsa". Bungkus akses localStorage dengan try/catch.
-```
-
-**Prompt B: aksi kartu dan aktivitas**
-
-```
-Di setiap kartu (muncul saat hover; selalu terlihat di HP): Unduh, Pakai prompt
-(mengembalikan prompt dan pengaturan ke composer), Animasikan (khusus gambar),
-dan Hapus dengan konfirmasi di dalam halaman (bukan alert browser). Tombol
-Aktivitas di top bar membuka panel kanan berisi job sesi ini (status, model,
-waktu, biaya).
-```
-
-**Prompt C: kode akses**
-
-```
-Aktifkan kode akses: jika server mewajibkan APP_PASSCODE, tampilkan dialog
-modal yang rapi untuk memasukkan kode. Simpan di localStorage, kirim sebagai
-header x-passcode di setiap request, dan buka dialog lagi jika server
-membalas "Kode akses salah". Uji dengan APP_PASSCODE=kelas123 di .env.local.
-```
-
-**Prompt D: audit akhir**
-
-```
-Lakukan audit akhir seperti reviewer profesional sebelum rilis:
-1. Keamanan: key hanya di server, semua route (kecuali status dan file) dicek
-   passcode, input divalidasi dengan models.ts, tidak ada key di file yang
-   di-commit.
-2. Tampilan: cek 390px, 768px, 1280px, tema gelap dan terang; keadaan kosong,
-   loading, error, sukses.
-3. Aksesibilitas: label, fokus keyboard, Esc menutup popover/modal, kontras,
-   teks alternatif gambar, prefers-reduced-motion.
-4. Lint, typecheck, build.
-Buat daftar temuan, perbaiki semuanya, lalu laporkan sebelum dan sesudah.
-```
-
-Cek setelahnya:
-
-- [ ] Refresh halaman: grid masih ada
 - [ ] Salah memasukkan kode akses: dialog muncul lagi dengan pesan jelas
 - [ ] Audit tidak menyisakan temuan
 
 ---
 
-## Sesi 8: Publish ke internet (GitHub + Vercel, gratis) 🆓 ✋
+## Langkah 6: Publish ke internet (GitHub + Vercel, gratis) 🆓 ✋
 
 ```
 Siapkan PosterKu untuk dipublikasikan:
@@ -359,36 +253,25 @@ Siapkan PosterKu untuk dipublikasikan:
    (tanpa nilainya).
 ```
 
-✋ **Lalu di Vercel (kamu sendiri):** import repository, isi `YORAI_API_KEY`,
-`APP_PASSCODE`, dan `DEMO_MODE=false`, lalu Deploy. Lihat
-[PUBLISH-VERCEL.md](PUBLISH-VERCEL.md).
+✋ **Lalu di Vercel (kamu sendiri):**
+
+1. https://vercel.com/new → **Import** repository `posterku`.
+2. Buka **Environment Variables** dan isi:
+   - `YORAI_API_KEY` = key Yorai kamu
+   - `APP_PASSCODE` = kode akses (misalnya `posterku2026`), **wajib** untuk aplikasi publik
+   - `DEMO_MODE` = `false`
+3. Klik **Deploy**, tunggu ±1–2 menit, lalu buka link-nya.
+4. Coba di HP. Bagikan link + kode akses ke teman.
 
 Cek setelahnya:
 
 - [ ] Link `.vercel.app` bisa dibuka di HP
-- [ ] Tanpa kode akses, aplikasi tidak bisa membuat poster
-- [ ] Setiap kali minta AI mengubah sesuatu, lalu commit + push, Vercel
-      otomatis memperbarui situsnya
-
-> Paket gratis Vercel (Hobby) khusus penggunaan **non-komersial**. Kalau
-> aplikasi ini mau dijual atau dipakai untuk bisnis, pakai paket Pro atau
-> hosting lain.
+- [ ] Tanpa kode akses, aplikasi tidak bisa membuat apa pun
+- [ ] Setiap perubahan yang di-commit dan di-push otomatis memperbarui situsnya
 
 ---
 
-## Sesi 9: Kembangkan sendiri (tantangan) 🆓/💰
-
-| Ide | Prompt awal |
-|---|---|
-| Bagikan ke WhatsApp | "Tambahkan tombol Bagikan ke WhatsApp di viewer yang membuka wa.me dengan caption terisi." |
-| Banyak bahasa | "Tambahkan pilihan bahasa caption di Prompt otomatis: Indonesia, Inggris, Jawa." |
-| 4 variasi sekaligus | "Tambahkan pilihan jumlah 1–4 di composer. Tampilkan total biaya sebelum mulai." |
-| Template acara | "Tambahkan gaya Ramadan, Kemerdekaan, Harbolnas, dan Imlek di Prompt otomatis." |
-| Musik latar | "Tambahkan tab Audio di composer memakai model musik Yorai. Cek katalog https://yorai.id/docs/api/models dan tampilkan biaya sebelum membuat." |
-| Tambah model | "Tambahkan model <slug> dari https://yorai.id/docs/api/models ke src/lib/models.ts. Baca halaman .md-nya untuk input dan rasionya." |
-| Branding toko | "Tambahkan input nama toko dan warna brand di Prompt otomatis, lalu masukkan ke prompt." |
-
-Bungkus idenya dengan rumus ini:
+## Langkah 7: Kembangkan sendiri (tantangan) 🆓/💰
 
 ```
 Lanjutkan PosterKu (AGENTS.md). Tambahkan fitur: <ide kamu>.
@@ -399,6 +282,16 @@ biaya sebelum tombol diklik.
 Cara mengecek: <apa yang harus saya coba di browser>.
 Uji di mode demo dulu, lalu commit dengan pesan yang jelas.
 ```
+
+| Ide | Isi untuk "Tambahkan fitur" |
+|---|---|
+| Bagikan ke WhatsApp | tombol Bagikan ke WhatsApp di viewer yang membuka wa.me dengan caption terisi |
+| Banyak bahasa | pilihan bahasa caption di Prompt otomatis: Indonesia, Inggris, Jawa |
+| 4 variasi sekaligus | pilihan jumlah 1–4 di composer, total biaya tampil sebelum mulai |
+| Template acara | gaya Ramadan, Kemerdekaan, Harbolnas, dan Imlek di Prompt otomatis |
+| Musik latar | tab Audio di composer memakai model musik Yorai (cek https://yorai.id/docs/api/models) |
+| Tambah model | model `<slug>` dari https://yorai.id/docs/api/models ke src/lib/models.ts (baca halaman .md-nya) |
+| Branding toko | input nama toko dan warna brand di Prompt otomatis, lalu masukkan ke prompt |
 
 ---
 
