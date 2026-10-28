@@ -1,182 +1,275 @@
-# Panduan lengkap: membuat PosterKu Studio dengan Antigravity atau Codex
+# Panduan untuk pemula: membuat aplikasi AI tanpa bisa ngoding
 
-Panduan ini memandu dari folder kosong sampai aplikasi online di
-`xxx.vercel.app`, **tanpa menulis kode sendiri**. Tugasmu hanya tiga:
-menempelkan prompt, mengecek hasilnya di browser, dan menyimpan versi yang
-sudah bagus. Semua kodenya ditulis oleh agen AI.
+Panduan ini untuk kamu yang **belum pernah ngoding sama sekali**. Kamu tidak
+perlu mengerti kode. Kamu cukup bisa:
 
-Contoh hasil akhirnya: https://posterku-one.vercel.app
+- mengetik dan menyalin-tempel (Ctrl+C, Ctrl+V; di Mac: Cmd+C, Cmd+V),
+- membuka aplikasi dan situs web,
+- membaca dan mengikuti langkah satu per satu.
 
-## Gambaran besar
+Yang menulis kodenya adalah **asisten AI**. Kamu berperan sebagai "bos":
+memberi perintah, melihat hasilnya, lalu bilang "simpan" atau "ulangi".
 
-```
-  Kamu                     Agen AI                         Hasil
-  ─────                    ───────                         ─────
-  tempel prompt      ──►  baca AGENTS.md + prompt   ──►  kode baru
-  cek di browser      ◄──  jalankan & tes sendiri    ◄──  laporan 4 bagian
-  /simpan (commit)    ──►  titik simpan git          ──►  bisa dibatalkan kapan saja
-```
+Hasil akhirnya seperti ini: https://posterku-one.vercel.app. Ini aplikasi
+untuk membuat gambar dan video promosi produk UMKM dengan AI. Kamu bisa
+membukanya dari HP mana pun.
 
-Yang membuat hasilnya rapi dan profesional bukan kemampuan ngoding kita,
-melainkan **`AGENTS.md`**: cetak biru dan aturan kerja yang dibaca agen setiap
-kali kamu memberi perintah. Isinya meliputi standar kualitas, keamanan API key,
-definisi "selesai", dan cara memakai API Yorai. Penjelasan lengkapnya ada di
-[CARA-PAKAI-AGENTS.md](CARA-PAKAI-AGENTS.md).
+Waktu total: sekitar 1 hari (bisa dibagi 2 hari).
 
-Aplikasi yang akan kamu bangun:
+---
 
-| Bagian | Fungsinya |
+## Kamus kecil (baca sekali, tidak perlu dihafal)
+
+| Kata | Artinya, dengan bahasa sehari-hari |
 |---|---|
-| Composer di bawah layar | tulis prompt, pilih Gambar/Video, model, rasio, durasi, lalu **Buat** |
-| Prompt otomatis | dari nama produk, AI menulis prompt + headline, caption, hashtag |
-| Grid hasil | kartu gambar/video dengan progres, Unduh, Pakai prompt, Animasikan |
-| Server kecil (`/api/...`) | menyimpan API key dengan aman lalu memanggil Yorai |
+| **Agen AI** | asisten AI yang bisa menulis kode dan menjalankan program di komputermu. Di kelas ini: **Antigravity** atau **Codex**. |
+| **Prompt** | pesan perintah yang kamu kirim ke agen AI. Kita sudah menyiapkan semuanya; kamu tinggal salin-tempel. |
+| **Folder proyek** | satu folder di komputermu yang berisi semua bahan aplikasi. Namanya `posterku`. |
+| **`AGENTS.md`** | "buku aturan" untuk agen AI. Isinya cara kerja, standar kualitas, dan larangan. Agen membacanya sendiri. |
+| **localhost** | aplikasimu yang sedang berjalan **di komputermu sendiri**. Alamatnya `http://localhost:3000`. Hanya kamu yang bisa membukanya. |
+| **Mode demo** | aplikasi berjalan dengan hasil contoh, tanpa memakai kredit. Aman untuk latihan. |
+| **Yorai** | layanan AI yang membuat teks, gambar, dan video. Kita "menyewa" kecerdasannya dengan kredit. |
+| **API key** | "kunci rumah" untuk memakai Yorai atas namamu. **Rahasia.** Siapa pun yang memegangnya bisa memakai kreditmu. |
+| **Simpan / commit** | membuat titik simpan, seperti *save game*. Kalau nanti rusak, kamu bisa kembali ke titik ini. |
+| **GitHub** | tempat menyimpan salinan folder proyekmu di internet. |
+| **Vercel** | tempat "menayangkan" aplikasimu di internet supaya bisa dibuka orang lain. Gratis. |
+| **Deploy / publish** | menayangkan aplikasi ke internet. |
 
-## Langkah 0 — Persiapan (sekali saja, ±45 menit)
+---
 
-Ikuti [00-PERSIAPAN.md](00-PERSIAPAN.md). Ringkasnya:
+## Bagian A — Persiapan (sekali saja, ±1 jam)
 
-1. Buat akun **GitHub**, **Vercel** (login dengan GitHub), dan **Yorai**.
-2. Instal **Node.js LTS**, **Git**, dan **Google Chrome**.
-3. Pasang salah satu agen AI: **Antigravity** atau **Codex** (lihat tabel di
-   bawah).
-4. Di Yorai, isi kredit (Rp10.000 cukup untuk latihan), lalu buat API key di
-   https://yorai.id/app/api. Simpan key itu di catatan pribadi. **Jangan
-   tempel ke chat AI.**
-5. Unduh repository kelas (**Code → Download ZIP**), lalu salin folder
-   `starter` menjadi, misalnya, `Documents/posterku`.
+### A1. Buat akun (semua gratis)
 
-| | Google Antigravity | ChatGPT Codex |
+Buka setiap link, lalu daftar seperti mendaftar media sosial:
+
+1. **GitHub**: https://github.com/signup
+2. **Vercel**: https://vercel.com/signup. Pilih **Continue with GitHub** supaya
+   kedua akun langsung tersambung.
+3. **Yorai**: https://yorai.id/register
+
+### A2. Pasang 3 program di komputer
+
+Unduh, buka file unduhannya, lalu klik **Next** sampai **Finish**. Tidak ada
+pengaturan yang perlu diubah.
+
+1. **Node.js** (mesin untuk menjalankan aplikasi): https://nodejs.org. Pilih
+   tombol yang bertuliskan **LTS**.
+2. **Git** (pencatat titik simpan): Windows dari https://git-scm.com. Di Mac
+   biasanya sudah ada; kalau muncul jendela "install Command Line Tools", klik
+   **Install**.
+3. **Google Chrome**: https://www.google.com/chrome
+
+### A3. Pilih asisten AI (cukup salah satu)
+
+| | **Google Antigravity** (disarankan) | **ChatGPT Codex** |
 |---|---|---|
-| Cocok untuk | pemula, karena agen bisa membuka browser dan mengetes sendiri | yang sudah berlangganan ChatGPT |
-| Cara membuka proyek | **Open Folder** → pilih folder `posterku` | aplikasi Codex / ekstensi VS Code: buka folder `posterku` |
-| Aturan yang dibaca | `AGENTS.md` + `.agents/rules/posterku.md` | `AGENTS.md` |
-| Pintasan | `/jalankan` `/cek-kualitas` `/simpan` `/batalkan` `/publish` | ketik kalimat biasa (lihat tabel pintasan di bawah) |
-| Mode yang dipilih | agen **meminta persetujuan** untuk hal penting | *Agent* (boleh mengubah file di folder ini), bukan *Full access* |
+| Biaya | gratis dengan akun Google | perlu langganan ChatGPT |
+| Kelebihan | bisa membuka browser dan mengecek aplikasimu sendiri | cocok kalau kamu sudah biasa memakai ChatGPT |
+| Cara pasang | unduh di https://antigravity.google, lalu login dengan Google | pasang aplikasi Codex dari https://chatgpt.com/codex, lalu login dengan akun ChatGPT |
 
-## Langkah 1 — Buka folder dan pastikan agen membaca aturan
+Saat pertama dibuka, kalau ditanya mode kerja, pilih mode yang **meminta
+persetujuan** sebelum melakukan hal penting. Jangan pilih mode "serba
+otomatis/full access". Dengan begitu kamu selalu tahu apa yang dikerjakan AI.
 
-1. Buka folder `posterku` di Antigravity atau Codex.
-2. Ketik di chat agen:
+### A4. Siapkan Yorai (kredit + API key)
 
-   ```
-   Sebutkan 3 aturan terpenting dari AGENTS.md proyek ini, dalam bahasa awam.
-   ```
+1. Login di https://yorai.id, buka menu **Kredit**, lalu isi **Rp10.000**. Itu
+   cukup untuk ±100 gambar latihan.
+2. Buka https://yorai.id/app/api, klik **Buat key**, beri nama `posterku`.
+3. Sebuah kode panjang muncul. **Salin, lalu simpan di aplikasi catatan
+   pribadimu** (misalnya Notes atau Google Keep). Kode ini hanya ditampilkan
+   sekali.
 
-3. Jawaban yang benar menyebut hal seperti "API key hanya di server", "pakai
-   mode demo untuk tes", dan "laporan dalam 4 bagian". Kalau agen bilang tidak
-   menemukan `AGENTS.md`, pastikan folder yang dibuka adalah folder `posterku`
-   (bukan folder di atasnya).
+> ⚠️ **Jangan pernah menempelkan API key ke chat AI, WhatsApp, atau grup.**
+> Nanti ada satu tempat khusus untuk mengisinya (Bagian C, langkah 4).
 
-## Langkah 2 — Pola kerja yang diulang di setiap langkah
+### A5. Ambil folder awal
 
-Setiap langkah memakai pola yang sama:
+1. Buka repository kelas (link dari pengajar).
+2. Klik tombol hijau **Code**, lalu **Download ZIP**.
+3. Buka file ZIP-nya (klik dua kali). Di dalamnya ada folder bernama
+   `starter`.
+4. Salin folder `starter` ke folder **Documents** (Dokumen), lalu ganti namanya
+   menjadi `posterku`.
 
-1. **Buka file prompt langkah itu** di folder `kelas/prompts/`, lalu salin **seluruh**
-   isi blok prompt (kotak abu-abu).
-2. **Tempel ke chat agen**, lalu kirim.
-3. Agen menulis **rencana singkat**. Kalau rencananya menambah library,
-   menghapus fitur, atau memakai biaya, agen akan bertanya dulu. Jawab
-   "ya, lanjut" atau minta perubahan.
-4. Tunggu agen selesai. Agen menjalankan lint, typecheck, dan build sendiri.
-5. Baca **laporan 4 bagian**: Yang berubah, Cara mengecek, Hasil pemeriksaan,
-   dan Langkah berikutnya.
-6. **Cek sendiri di browser** memakai checklist "Cek hasil" di file prompt.
-7. Kalau sudah bagus: **simpan**. Kalau rusak: **batalkan**.
+Isi folder ini masih sangat sedikit: buku aturan untuk AI (`AGENTS.md`) dan
+materi kelas (`kelas`). Belum ada aplikasinya. Aplikasinya akan dibuat AI.
 
-| Maksud | Antigravity | Codex (ketik kalimat ini) |
-|---|---|---|
-| Menjalankan aplikasi | `/jalankan` | "Jalankan aplikasinya dan beri tahu alamatnya." |
-| Memeriksa kualitas | `/cek-kualitas` | "Jalankan lint, typecheck, dan build, lalu perbaiki sampai lulus." |
-| Menyimpan versi | `/simpan` | "Commit semua perubahan dengan pesan bahasa Indonesia yang jelas." |
-| Kembali ke versi terakhir | `/batalkan` | "Batalkan semua perubahan sejak commit terakhir. Tanya saya dulu." |
-| Publish | `/publish` | salin prompt langkah 6 |
+---
 
-> **Satu langkah, satu prompt.** Jangan menggabungkan beberapa langkah dalam
-> satu pesan. Agen bekerja paling baik dengan langkah yang bisa dicek.
+## Bagian B — Buka folder di asisten AI (5 menit)
 
-## Langkah 3 — Bangun aplikasinya (7 prompt)
+### Kalau memakai Antigravity
 
-Semua prompt siap salin, berurutan dalam satu file:
-**[PROMPT-LENGKAP.md](PROMPT-LENGKAP.md)**. Atau buka per langkah lewat tabel di
-bawah.
+1. Buka Antigravity.
+2. Klik **Open Folder** (atau menu **File → Open Folder**).
+3. Pilih folder `Documents/posterku`, lalu klik **Open**/**Select Folder**.
+4. Kalau muncul pertanyaan "Do you trust the authors of this folder?", klik
+   **Yes, I trust**. Folder ini milikmu sendiri.
+5. Di sisi kanan ada kotak chat agen. Di situlah kamu akan menempel prompt.
 
-| Langkah | File prompt | Yang kamu lihat setelahnya | Biaya |
+### Kalau memakai Codex
+
+1. Buka aplikasi Codex.
+2. Pilih **folder proyek** dan arahkan ke `Documents/posterku`.
+3. Pastikan mode kerjanya bukan *full access*.
+4. Kotak chat Codex adalah tempat kamu menempel prompt.
+
+### Tes: apakah AI sudah membaca buku aturan?
+
+Ketik pesan ini di kotak chat agen, lalu tekan Enter:
+
+```
+Sebutkan 3 aturan terpenting dari AGENTS.md proyek ini, dalam bahasa awam.
+```
+
+✅ **Berhasil** kalau jawabannya menyebut hal seperti "API key hanya disimpan
+di server", "pakai mode demo untuk tes", atau "laporan dalam 4 bagian".
+
+❌ **Belum berhasil** kalau AI bilang tidak menemukan `AGENTS.md`. Artinya
+folder yang dibuka salah. Ulangi Bagian B dan pastikan yang dipilih adalah
+folder `posterku` itu sendiri, bukan folder Documents.
+
+---
+
+## Bagian C — Membuat aplikasinya (7 prompt)
+
+### Cara mengambil prompt
+
+Semua prompt ada di satu file: **`kelas/PROMPT-LENGKAP.md`**.
+
+1. Di panel daftar file (sebelah kiri), buka folder `kelas`, lalu klik
+   `PROMPT-LENGKAP.md`.
+2. Setiap prompt ada di dalam **kotak abu-abu**. Blok seluruh isi satu kotak
+   dengan mouse, lalu salin (Ctrl+C / Cmd+C).
+3. Tempel di kotak chat agen (Ctrl+V / Cmd+V), lalu tekan Enter.
+
+> **Aturan paling penting: satu kotak = satu pesan.** Jangan menempel dua
+> kotak sekaligus. Tunggu sampai satu langkah selesai, baru lanjut.
+
+### Yang terjadi setiap kali kamu mengirim prompt
+
+1. **AI menulis rencana singkat.** Baca sekilas. Kalau AI bertanya, misalnya
+   "Boleh lanjut?", jawab **"ya, lanjut"**.
+2. **AI meminta izin menjalankan sesuatu.** Akan muncul tombol seperti
+   **Accept**, **Allow**, **Run**, atau **Approve**. Klik saja. Itu AI yang
+   sedang memasang bahan atau menjalankan aplikasimu. Satu-satunya yang perlu
+   kamu tolak: perintah yang menyebut **`sudo`** atau "hapus banyak file".
+   Kalau melihatnya, klik tolak lalu tanya AI, "Kenapa perlu itu?"
+3. **Tunggu.** Biasanya 3–15 menit. Ambil kopi. ☕
+4. **AI memberi laporan** dengan 4 bagian: *Yang berubah*, *Cara mengecek*,
+   *Hasil pemeriksaan*, *Langkah berikutnya*. Kalau *Hasil pemeriksaan*
+   bertuliskan **lulus**, berarti aman.
+5. **Lihat hasilnya sendiri.** Buka Chrome, ketik `localhost:3000` di
+   kolom alamat, lalu tekan Enter. (Antigravity sering membukakannya
+   untukmu.) Cocokkan dengan daftar "Cek setelahnya" di bawah prompt.
+6. **Simpan.** Ketik `/simpan` (Antigravity) atau
+   *"Simpan semua perubahan dengan commit."* (Codex).
+
+Kalau hasilnya **tidak sesuai**, ceritakan saja apa yang kamu lihat dengan
+bahasamu sendiri. Contoh: *"Tombol Buat-nya tertutup di HP, tolong
+perbaiki."* Kalau hasilnya **makin rusak**, ketik `/batalkan` (Antigravity)
+atau *"Kembalikan ke titik simpan terakhir."* (Codex).
+
+### Ketujuh langkahnya
+
+| # | Yang kamu kirim | Yang kamu lihat setelahnya | Biaya |
 |---|---|---|---|
-| 1 | [01-proyek-awal](prompts/01-proyek-awal.md) | halaman awal Next.js di `localhost:3000` | gratis |
-| 2 | [02-tampilan](prompts/02-tampilan.md) | studio: rail, grid kosong, composer, popover pengaturan | gratis |
-| 3 | [03-alur-demo](prompts/03-alur-demo.md) | semua fitur jalan dengan hasil contoh: progres, Prompt otomatis, riwayat, viewer, Animasikan | gratis |
-| 4 | [04-sambungkan-yorai](prompts/04-sambungkan-yorai.md) | teks, gambar, video dari AI sungguhan + saldo | ±Rp100 untuk tes |
-| 5 | [05-kode-akses-audit](prompts/05-kode-akses-audit.md) | kode akses + audit kualitas | gratis |
-| 6 | [06-publish](prompts/06-publish.md) | aplikasi online di `xxx.vercel.app` | gratis |
-| 7 | [07-kembangkan](prompts/07-kembangkan.md) | fitur pilihanmu sendiri | tergantung |
+| 1 | Prompt **Langkah 1: Proyek awal** | halaman putih bawaan di `localhost:3000` | gratis |
+| 2 | Prompt **Langkah 2: Tampilan studio** | tampilan studio gelap dengan kotak tulisan di bawah | gratis |
+| 3 | Prompt **Langkah 3: Semua fitur di mode demo** | klik **Buat** memunculkan gambar/video contoh | gratis |
+| 4 | ✋ Isi API key dulu, lalu prompt **Langkah 4** | gambar dan video dari AI sungguhan | ±Rp100 untuk tes |
+| 5 | Prompt **Langkah 5: Kode akses + audit** | aplikasi meminta kode akses | gratis |
+| 6 | ✋ Prompt **Langkah 6: Publish**, lalu isi Vercel | aplikasimu online di `xxx.vercel.app` | gratis |
+| 7 | Prompt **Langkah 7** (opsional) | fitur ide kamu sendiri | tergantung |
 
-Catatan:
+### Langkah 4 butuh satu hal yang kamu kerjakan sendiri ✋
 
-- **Langkah 1–3 memakai mode demo** (`DEMO_MODE=true`). Semua fitur bisa
-  dicoba tanpa kredit, jadi bereksperimenlah sepuasnya di sini.
-- **Sebelum langkah 4** ada satu langkah manual: buka `.env.local`, isi
-  `YORAI_API_KEY=` dengan key-mu, ubah `DEMO_MODE=false`, lalu simpan. Ini
-  satu-satunya file yang kamu sentuh sendiri. Jangan pernah menempelkan key
-  ke chat.
-- **Mulai langkah 4 memakai kredit sungguhan.** Agen diminta menyebutkan
-  perkiraan biaya sebelum memanggil API. Lihat juga biaya di tombol **Buat**
-  sebelum mengeklik.
-- **Langkah 2 boleh kreatif.** Minta perubahan visual dengan bahasamu sendiri,
-  misalnya *"ganti warna aksen jadi hijau daun"*. Jangan lupa `/simpan`
-  sebelum bereksperimen.
+Sebelum mengirim prompt Langkah 4, kamu harus memberikan API key Yorai ke
+aplikasi. Caranya **bukan lewat chat**:
 
-## Langkah 4 — Publish ke internet
+1. Di panel daftar file (kiri), cari file bernama **`.env.local`** lalu klik.
+   (Kalau tidak terlihat, ketik ke agen: *"Buka file .env.local untuk saya."*)
+2. Kamu akan melihat beberapa baris tulisan. Cari baris `YORAI_API_KEY=`, lalu
+   tempel API key-mu tepat setelah tanda `=` (tanpa spasi).
+3. Cari baris `DEMO_MODE=true` dan ubah menjadi `DEMO_MODE=false`.
+4. Simpan file: Ctrl+S (Mac: Cmd+S).
+5. Sekarang kirim prompt Langkah 4. AI akan menyebutkan perkiraan biaya
+   sebelum memakai kredit.
 
-1. Jalankan prompt langkah 6 (`/publish` di Antigravity). Agen akan mengecek kualitas,
-   membuat README, lalu push ke repository GitHub **private**.
-2. Di https://vercel.com/new, **Import** repository `posterku`.
-3. Di **Environment Variables**, isi sendiri (jangan lewat agen):
+> Mulai Langkah 4, setiap klik **Buat** memakai kredit sungguhan. Biayanya
+> selalu tertulis di tombol **Buat** sebelum kamu klik.
 
-   | Nama | Nilai |
+### Langkah 6: menayangkan ke internet ✋
+
+1. Kirim prompt Langkah 6 (di Antigravity cukup ketik `/publish`). AI akan
+   menyimpan proyekmu ke GitHub. Kalau AI meminta kamu login GitHub, ikuti
+   petunjuknya di browser.
+2. Buka https://vercel.com/new. Di daftar repository, cari `posterku` lalu
+   klik **Import**.
+3. Klik bagian **Environment Variables**. Isi tiga baris ini (kolom kiri =
+   nama, kolom kanan = nilai), klik **Add** setiap selesai satu baris:
+
+   | Nama (kiri) | Nilai (kanan) |
    |---|---|
-   | `YORAI_API_KEY` | key Yorai-mu |
-   | `APP_PASSCODE` | kode akses pilihanmu, misalnya `posterku2026` |
+   | `YORAI_API_KEY` | API key Yorai-mu (dari catatan pribadimu) |
+   | `APP_PASSCODE` | kata sandi bebas buatanmu, misalnya `kopi2026` |
    | `DEMO_MODE` | `false` |
 
-4. Klik **Deploy**, tunggu 1–2 menit, lalu buka link-nya di HP.
-5. Setelah ini, setiap perubahan yang di-commit lalu di-push ke GitHub akan
-   otomatis memperbarui situsnya.
+4. Klik **Deploy**. Tunggu 1–2 menit sampai muncul kembang api 🎉.
+5. Klik gambar pratinjaunya. Itulah aplikasimu di internet. Buka di HP,
+   masukkan `APP_PASSCODE` tadi, lalu coba buat gambar.
 
-Panduan klik demi klik: [PUBLISH-VERCEL.md](PUBLISH-VERCEL.md).
+> `APP_PASSCODE` adalah gembok aplikasimu. Bagikan link-nya boleh, tapi kode
+> aksesnya hanya untuk orang yang kamu percaya, karena setiap gambar dan video
+> memakai kreditmu.
 
-> `APP_PASSCODE` wajib untuk aplikasi publik. Tanpa kode akses, siapa pun yang
-> tahu link-nya bisa menghabiskan kreditmu.
+Panduan klik demi klik yang lebih rinci: [PUBLISH-VERCEL.md](PUBLISH-VERCEL.md).
 
-## Langkah 5 — Cek akhir sebelum dibagikan
+---
 
-- [ ] Dibuka di HP: tidak ada scroll ke samping, composer tidak menutupi hasil
+## Bagian D — Cek akhir sebelum dibagikan
+
+Centang satu per satu:
+
+- [ ] Aplikasi bisa dibuka di HP dan tidak perlu digeser ke samping
 - [ ] Tanpa kode akses, aplikasi tidak bisa membuat apa pun
-- [ ] Prompt otomatis → Buat (Z-Image) menghasilkan gambar, dan saldo berkurang ±0,084
-- [ ] Kartu menampilkan progres saat dibuat, dan prompt kosong lagi setelah Buat
-- [ ] Unduh, Pakai prompt, Animasikan, dan Hapus bekerja
-- [ ] `.env.local` tidak ada di GitHub (cek di halaman repository)
+- [ ] **Prompt otomatis** → isi nama produk → **Buat** menghasilkan gambar
+- [ ] Saat gambar sedang dibuat, ada tanda progres (persen dan waktu)
+- [ ] Tombol **Unduh**, **Pakai prompt**, **Animasikan**, dan **Hapus** berfungsi
+- [ ] Saldo di pojok kanan atas berkurang sesuai biaya
+
+---
 
 ## Kalau ada masalah
 
-| Masalah | Yang dilakukan |
+| Yang kamu lihat | Yang kamu lakukan |
 |---|---|
-| Error merah, tampilan rusak, AI berputar-putar | salin prompt yang cocok dari [PROMPT-DARURAT.md](PROMPT-DARURAT.md) |
-| Hasil makin rusak setelah beberapa percobaan | `/batalkan` (kembali ke titik simpan), lalu ulangi dengan prompt yang lebih kecil |
-| Agen menyuruhmu mengetik perintah atau mengedit kode | ingatkan: *"Ikuti AGENTS.md bagian 1: jalankan sendiri."* |
-| "Server terlalu lama merespons" | model AI di penyedia sedang gangguan; coba lagi, atau minta agen mengganti `YORAI_TEXT_MODEL` |
+| Tulisan merah/error di aplikasi | salin pesan errornya, tempel ke agen, lalu tulis: *"Muncul error ini. Perbaiki dan jelaskan dengan bahasa awam."* |
+| Tampilan berantakan | ambil screenshot, tempel ke agen (Antigravity/Codex bisa menerima gambar), lalu jelaskan yang aneh |
+| AI berputar-putar, hasil makin rusak | `/batalkan` (atau *"Kembalikan ke titik simpan terakhir"*), lalu ulangi prompt yang sama di **percakapan baru** |
+| AI menyuruhmu mengetik kode atau perintah | balas: *"Saya tidak bisa ngoding. Ikuti AGENTS.md: jalankan semuanya sendiri."* |
+| `localhost:3000` tidak bisa dibuka | ketik ke agen `/jalankan` (atau *"Jalankan aplikasinya dan beri tahu alamatnya"*) |
 | "Saldo kurang" | isi kredit di https://yorai.id/app/credits |
-| API key terlanjur ditempel di chat | cabut key di https://yorai.id/app/api, buat yang baru, isi ulang di `.env.local` dan Vercel |
+| "Server terlalu lama merespons" | AI di Yorai sedang sibuk. Tunggu sebentar lalu coba lagi |
+| API key terlanjur ditempel di chat | buka https://yorai.id/app/api, hapus key lama, buat yang baru, lalu isi ulang di `.env.local` dan Vercel |
 
-## Tips agar hasilnya profesional
+Prompt siap pakai untuk masalah lain: [PROMPT-DARURAT.md](PROMPT-DARURAT.md).
 
-1. **Jelaskan "apa" dan "untuk siapa"**, bukan "bagaimana". Contoh: *"Pemilik
-   warung di HP harus bisa membuat video promo dalam 3 klik."*
-2. **Satu permintaan per pesan**, lalu cek dan simpan.
-3. **Selalu minta bukti**: *"Tunjukkan hasil lint, typecheck, dan build."*
-4. **Uji di HP** setiap selesai mengubah tampilan.
-5. **Rumus prompt**: konteks → tujuan → detail → batasan → cara mengecek
-   (lihat [ATURAN-PAKAI.md](ATURAN-PAKAI.md)).
-6. **Mau membuat generator lain?** Salin `AGENTS.md`, ganti bagian 5 (tentang
-   produk), lalu mulai lagi dari langkah 1
-   ([CARA-PAKAI-AGENTS.md](CARA-PAKAI-AGENTS.md), langkah 7).
+---
+
+## Tips supaya hasilnya bagus
+
+1. **Ceritakan apa yang kamu mau, bukan caranya.** Contoh: *"Pemilik warung
+   harus bisa membuat video promo dari HP dalam 3 klik."* AI yang memikirkan
+   caranya.
+2. **Satu permintaan, satu pesan.** Lalu cek dan simpan.
+3. **Simpan sebelum bereksperimen.** Kalau eksperimennya gagal, tinggal
+   batalkan.
+4. **Selalu cek di HP**, karena kebanyakan pengguna membukanya dari HP.
+5. **Percakapan sudah sangat panjang?** Buka percakapan baru. AI bisa "lupa"
+   kalau percakapannya terlalu panjang. Aturannya tetap terbaca dari
+   `AGENTS.md`.
+6. **Mau membuat aplikasi lain?** Lihat [CARA-PAKAI-AGENTS.md](CARA-PAKAI-AGENTS.md),
+   langkah 7.
