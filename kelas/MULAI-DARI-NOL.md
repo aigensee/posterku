@@ -18,6 +18,10 @@ Jadi urutannya:
    (`/jalankan`, `/simpan`, dll.).
 3. **Langkah 1–7**: agen membangun aplikasinya.
 
+> **Ingin buku aturan untuk ide aplikasimu sendiri?** Ganti Prompt 0A dan 0B
+> dengan prompt di [PROMPT-BUAT-AGENTS.md](PROMPT-BUAT-AGENTS.md): AI
+> mewawancaraimu lalu menulis `AGENTS.md` dan `.agents` sendiri.
+
 Sebelum mulai, pastikan **Node.js** dan **Git** sudah terpasang (lihat
 [PANDUAN-MEMBUAT.md](PANDUAN-MEMBUAT.md), bagian A2).
 
