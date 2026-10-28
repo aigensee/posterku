@@ -10,7 +10,7 @@ sepenuhnya dengan memberi instruksi ke agen AI (**Google Antigravity** atau
 | # | File | Hasil akhir |
 |---|---|---|
 | ★ | [PANDUAN-MEMBUAT.md](PANDUAN-MEMBUAT.md) | **mulai di sini**: panduan untuk pemula total, dari nol sampai online |
-| ★ | [MULAI-DARI-NOL.md](MULAI-DARI-NOL.md) | mulai dari folder kosong di Antigravity (tanpa unduh ZIP) |
+| ★ | [MULAI-DARI-NOL.md](MULAI-DARI-NOL.md) | mulai dari folder kosong: agen menulis AGENTS.md sendiri, tanpa clone/unduh |
 | ★ | [PROMPT-LENGKAP.md](PROMPT-LENGKAP.md) | semua prompt siap salin, berurutan + pintasan untuk Codex |
 | 0 | [00-PERSIAPAN.md](00-PERSIAPAN.md) | akun, alat, API key, starter kit |
 | — | [ATURAN-PAKAI.md](ATURAN-PAKAI.md) | **baca dulu**: 10 aturan emas + rumus prompt |
