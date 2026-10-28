@@ -2,7 +2,8 @@
 
 Tujuh langkah langsung dari folder kosong sampai aplikasi online. Dipakai bersama
 [PANDUAN-MEMBUAT.md](PANDUAN-MEMBUAT.md). Prompt yang sama juga ada per langkah di
-folder [`prompts/`](prompts/).
+folder [`prompts/`](prompts/). Mau tampilannya meniru screenshot? Lihat
+[PROMPT-TAMPILAN.md](PROMPT-TAMPILAN.md).
 
 **Cara pakai:** salin isi satu kotak, tempel ke chat Antigravity atau Codex, kirim,
 tunggu laporannya, cek hasilnya, lalu simpan. **Satu kotak = satu pesan.**

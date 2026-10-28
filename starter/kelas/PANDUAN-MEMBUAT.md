@@ -187,6 +187,10 @@ atau *"Kembalikan ke titik simpan terakhir."* (Codex).
 | 6 | ✋ Prompt **Langkah 6: Publish**, lalu isi Vercel | aplikasimu online di `xxx.vercel.app` | gratis |
 | 7 | Prompt **Langkah 7** (opsional) | fitur ide kamu sendiri | tergantung |
 
+> **Ingin tampilannya persis seperti contoh?** Di Langkah 2 kamu bisa
+> melampirkan screenshot ke agen. Prompt dan screenshot-nya ada di
+> [PROMPT-TAMPILAN.md](PROMPT-TAMPILAN.md).
+
 ### Langkah 4 butuh satu hal yang kamu kerjakan sendiri ✋
 
 Sebelum mengirim prompt Langkah 4, kamu harus memberikan API key Yorai ke

@@ -627,13 +627,23 @@ main {
   right: 16px;
   bottom: calc(100% + 12px);
   width: 360px;
-  max-height: min(640px, calc(100dvh - 240px));
+  max-height: var(--settings-max-height, 240px);
   overflow-y: auto;
   border: 1px solid var(--border);
   border-radius: 16px;
   background: var(--surface);
   box-shadow: var(--shadow);
   padding: 20px;
+}
+@media (min-width: 641px) {
+  .settings-sticky-header {
+    position: sticky;
+    top: -20px;
+    z-index: 1;
+    margin: -20px -20px 0;
+    padding: 20px 20px 12px;
+    background: var(--surface);
+  }
 }
 .settings-popover .dialog-header {
   margin-bottom: 16px;

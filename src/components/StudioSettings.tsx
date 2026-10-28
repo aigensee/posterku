@@ -1,7 +1,7 @@
 "use client";
 
 // Pilihan model, rasio, dan pengaturan video dalam popover yang menjaga fokus.
-import { useEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef } from "react";
 import { models, startingCredits } from "@/lib/models";
 import { clamp, credits } from "@/lib/studio";
 import type { Studio } from "./useStudio";
@@ -16,6 +16,25 @@ export function StudioSettings({
   const ref = useRef<HTMLDivElement>(null);
   const state = app.composer;
   const model = models.find((m) => m.id === state.model)!;
+  useLayoutEffect(() => {
+    const popover = ref.current;
+    const composer = popover?.closest<HTMLElement>(".composer");
+    if (!popover || !composer) return;
+    const updateHeight = () => {
+      popover.style.setProperty(
+        "--settings-max-height",
+        `${Math.max(240, composer.getBoundingClientRect().top - 56 - 24)}px`,
+      );
+    };
+    updateHeight();
+    window.addEventListener("resize", updateHeight);
+    const observer = new ResizeObserver(updateHeight);
+    observer.observe(composer);
+    return () => {
+      window.removeEventListener("resize", updateHeight);
+      observer.disconnect();
+    };
+  }, []);
   useEffect(() => {
     const previous = document.activeElement as HTMLElement | null;
     ref.current?.querySelector<HTMLElement>("button")?.focus();
@@ -56,53 +75,55 @@ export function StudioSettings({
         }
       }}
     >
-      <div className="dialog-header">
-        <h2>Pengaturan karya</h2>
-        <button type="button" onClick={onClose} aria-label="Tutup pengaturan">
-          ×
-        </button>
-      </div>
-      <div className="segments">
-        {(["image", "video"] as const).map((kind) => (
-          <button
-            type="button"
-            key={kind}
-            aria-pressed={state.kind === kind}
-            onClick={() => {
-              const nextModel = models.find(
-                (m) =>
-                  m.id ===
-                  (kind === "video" ? "bytedance-seedance-2-mini" : "z-image"),
-              )!;
-              const oldPrompt =
-                state.kind === "video"
-                  ? state.attached?.videoPrompt
-                  : state.attached?.imagePrompt;
-              const nextPrompt =
-                kind === "video"
-                  ? state.attached?.videoPrompt
-                  : state.attached?.imagePrompt;
-              app.setComposer(
-                clamp(
-                  {
-                    ...state,
-                    prompt:
-                      kind !== state.kind &&
-                      state.prompt === oldPrompt &&
-                      nextPrompt !== undefined
-                        ? nextPrompt.slice(0, nextModel.promptMax)
-                        : state.prompt,
-                    ratio: kind === "video" ? "9:16" : "1:1",
-                    sound: true,
-                  },
-                  nextModel.id,
-                ),
-              );
-            }}
-          >
-            {kind === "image" ? "Gambar" : "Video"}
+      <div className="settings-sticky-header">
+        <div className="dialog-header">
+          <h2>Pengaturan karya</h2>
+          <button type="button" onClick={onClose} aria-label="Tutup pengaturan">
+            ×
           </button>
-        ))}
+        </div>
+        <div className="segments">
+          {(["image", "video"] as const).map((kind) => (
+            <button
+              type="button"
+              key={kind}
+              aria-pressed={state.kind === kind}
+              onClick={() => {
+                const nextModel = models.find(
+                  (m) =>
+                    m.id ===
+                    (kind === "video" ? "bytedance-seedance-2-mini" : "z-image"),
+                )!;
+                const oldPrompt =
+                  state.kind === "video"
+                    ? state.attached?.videoPrompt
+                    : state.attached?.imagePrompt;
+                const nextPrompt =
+                  kind === "video"
+                    ? state.attached?.videoPrompt
+                    : state.attached?.imagePrompt;
+                app.setComposer(
+                  clamp(
+                    {
+                      ...state,
+                      prompt:
+                        kind !== state.kind &&
+                        state.prompt === oldPrompt &&
+                        nextPrompt !== undefined
+                          ? nextPrompt.slice(0, nextModel.promptMax)
+                          : state.prompt,
+                      ratio: kind === "video" ? "9:16" : "1:1",
+                      sound: true,
+                    },
+                    nextModel.id,
+                  ),
+                );
+              }}
+            >
+              {kind === "image" ? "Gambar" : "Video"}
+            </button>
+          ))}
+        </div>
       </div>
       <div className="model-list">
         {models

@@ -4,6 +4,9 @@
 sungguhan (mirip workspace Yorai). Tombolnya belum melakukan apa-apa.
 **Waktu:** 45–60 menit.
 
+> **Punya screenshot acuan?** Versi prompt yang memakai screenshot ada di
+> [PROMPT-TAMPILAN.md](../PROMPT-TAMPILAN.md) (Prompt T1).
+
 ## Prompt
 
 ```
