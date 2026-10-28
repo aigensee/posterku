@@ -16,6 +16,11 @@ membukanya dari HP mana pun.
 
 Waktu total: sekitar 1 hari (bisa dibagi 2 hari).
 
+> **Ingin cara paling sederhana, cukup lewat chat?** Pakai
+> [RUMUS-CERITA.md](RUMUS-CERITA.md): tempel satu pesan pemandu, lalu
+> ceritakan idemu. Panduan di bawah ini untuk hasil yang persis seperti
+> PosterKu Studio.
+
 ---
 
 ## Kamus kecil (baca sekali, tidak perlu dihafal)

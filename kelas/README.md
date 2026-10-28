@@ -9,6 +9,7 @@ sepenuhnya dengan memberi instruksi ke agen AI (**Google Antigravity** atau
 
 | # | File | Hasil akhir |
 |---|---|---|
+| ★ | [RUMUS-CERITA.md](RUMUS-CERITA.md) | **paling mudah**: tempel 1 pesan pemandu, lalu cukup bercerita lewat chat |
 | ★ | [PANDUAN-MEMBUAT.md](PANDUAN-MEMBUAT.md) | **mulai di sini**: panduan untuk pemula total, dari nol sampai online |
 | ★ | [MULAI-DARI-NOL.md](MULAI-DARI-NOL.md) | mulai dari folder kosong: agen menulis AGENTS.md sendiri, tanpa clone/unduh |
 | ★ | [PROMPT-BUAT-AGENTS.md](PROMPT-BUAT-AGENTS.md) | minta AI menulis `AGENTS.md` dari idemu (wawancara atau formulir) |

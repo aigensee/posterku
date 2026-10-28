@@ -10,7 +10,8 @@ dibangun dengan Next.js, dan bisa dipublikasikan gratis di Vercel.
 > Repository ini adalah **contoh untuk kelas "AI tanpa ngoding"**. Materi dan
 > prompt kelas ada di [`kelas/`](kelas/README.md); titik mulai peserta ada di
 > [`starter/`](starter/). Langkah membuatnya dengan Antigravity atau Codex:
-> [`kelas/PANDUAN-MEMBUAT.md`](kelas/PANDUAN-MEMBUAT.md).
+> [`kelas/PANDUAN-MEMBUAT.md`](kelas/PANDUAN-MEMBUAT.md). Cara paling sederhana
+> (cukup bercerita lewat chat): [`kelas/RUMUS-CERITA.md`](kelas/RUMUS-CERITA.md).
 
 ## Fitur
 
